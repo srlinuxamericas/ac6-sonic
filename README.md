@@ -12,8 +12,14 @@ Shortcut links to major sections in this README:
 
 |   |
 |---|
-| [Build image and deploy lab](./01-deploy) |
-| [Configure BGP and EVPN](./02-sonic-cli) |
+| [01-Build image and deploy lab](./01-deploy) |
+| [02-Configure BGP and EVPN](./02-sonic-cli) |
+| [03-gNMI with SONiC](./03-sonic-gnmi) |
+| [04-SONiC Dashboards](./04-sonic-dashboards) |
+| [05-SONiC packet capture](./05-sonic-pcap) |
+| [06-SONiC Maintenance](./06-sonic-mw) |
+| [07-NETCONF with SONiC](./07-sonic-netconf) |
+| [08-Ansible with SONiC](./08-sonic-ansible) |
 
 ## Lab Environment
 
@@ -70,7 +76,7 @@ Refer to instructions in the [Codespace](./Codespace) directory for importing th
 ## Packet capture
 
 
-## SONiC Operations - Maitenance
+## SONiC Operations - Maintenance
 
 
 ## NETCONF Automation with SONiC
