@@ -10,7 +10,7 @@ If you need help, please raise your hand and a Nokia team member will be happy t
 
 Shortcut links to major sections in this README:
 
-|   |
+|Workshop Topics|
 |---|
 | [01-Build image and deploy lab](./01-deploy) |
 | [02-Configure BGP and EVPN](./02-sonic-cli) |
