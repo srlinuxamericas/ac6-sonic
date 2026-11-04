@@ -7,7 +7,7 @@ To save time, we will use a script to configure the link IP addresses on all dev
 On your VM, go to:
 
 ```bash
-cd ~/ac6-sonic
+cd ~/ac6-sonic/02-sonic-cli
 ```
 
 Then execute the script:
