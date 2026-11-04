@@ -59,28 +59,5 @@ Refer to instructions in the [Codespace](./Codespace) directory for importing th
 
 ---
 
-## Using gNMI with SONiC
 
-### gNMI Get
-
-
-### gNMI Set
-
-
-### gNMI Subscribe
-
-
-## SONiC Telemetry and Dashboards
-
-
-## Packet capture
-
-
-## SONiC Operations - Maintenance
-
-
-## NETCONF Automation with SONiC
-
-
-## Ansible Automation with SONiC
 
