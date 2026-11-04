@@ -39,41 +39,6 @@ The objective of the hands on section of this workshop is the following:
 
 Each workshop participant will be provided with the below topology consisting of 2 leaf and 2 spines nodes along with 2 clients. The Leaf-Spine architecture is typical in a Data Center environment and clients are simulating workloads or VMs.
 
-```mermaid
-graph TD
-    %% Nodes
-    spine11["spine11<br/>AS 65000"]
-    spine12["spine12<br/>AS 65000"]
-    leaf11["leaf11<br/>AS 65001"]
-    leaf12["leaf12<br/>AS 65002"]
-    
-    client11["client11 (L2VPN)<br/>172.16.10.50/24"]
-    client12["client12 (L3VPN)<br/>10.80.1.1/24"]
-    client13["client13 (L2VPN)<br/>172.16.10.60/24"]
-    client14["client14 (L3VPN)<br/>10.90.1.1/24"]
-
-    %% Backbone Links
-    spine11 ---|eth1 <----> eth1| leaf11
-    spine11 ---|eth2 <----> eth1| leaf12
-    spine12 ---|eth1 <----> eth2| leaf11
-    spine12 ---|eth2 <----> eth2| leaf12
-
-    %% Access Links
-    leaf11 ---|eth10 <----> eth1| client11
-    leaf11 ---|eth11 <----> eth1| client12
-    leaf12 ---|eth10 <----> eth1| client13
-    leaf12 ---|eth11 <----> eth1| client14
-
-    %% Styling
-    classDef spine fill:#2d3748,stroke:#4a5568,stroke-width:2px,color:#fff;
-    classDef leaf fill:#1a365d,stroke:#2b6cb0,stroke-width:2px,color:#fff;
-    classDef client fill:#22543d,stroke:#2f855a,stroke-width:1px,color:#fff;
-    
-    class spine11,spine12 spine;
-    class leaf11,leaf12 leaf;
-    class client11,client12,client13,client14 client;
-```
-
 ![image](images/lab-topology.jpg)
 
 ## NOS (Network Operating System)
