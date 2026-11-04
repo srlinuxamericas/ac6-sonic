@@ -8,7 +8,7 @@ Pre-requisite: A laptop with SSH client
 
 If you need help, please raise your hand and a Nokia team member will be happy to assist.
 
-Shortcut links to major sections in this README:
+Shortcut links to major sections in this README. Follow the instructions in the respective folders.
 
 |Workshop Topics|
 |---|
