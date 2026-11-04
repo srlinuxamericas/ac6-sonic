@@ -39,7 +39,7 @@ The objective of the hands on section of this workshop is the following:
 
 Each workshop participant will be provided with the below topology consisting of 2 leaf and 2 spines nodes along with 2 clients. The Leaf-Spine architecture is typical in a Data Center environment and clients are simulating workloads or VMs.
 
-![image](diagrams/lab-topology.jpg)
+![image](diagrams/lab-topology.png)
 
 ## NOS (Network Operating System)
 
@@ -445,7 +445,7 @@ Now we are ready to configure the overlay.
 
 For establishing overlay BGP session between Leaf1 and Leaf2, we will use the Loopback0 IP of the Leaf nodes. These IPs are pre-configured as part of initial lab deployment and can be verified using `show interface Loopback0` command.
 
-![image](diagrams/bgp-overlay-1.png)
+![image](diagrams/bgp-overlay.png)
 
 ### BGP Overlay Configuration
 
