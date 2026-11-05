@@ -41,8 +41,8 @@ The objective of the hands on section of this workshop is the following:
 - Automate configuration tasks
 - Simulate a Maintenance operation
 
-### Using Codespaces
-
+                [NOTE: During today's workshop we will be using dedicated computes and not Codespaces.] 
+### Using Codespaces 
 This lab can be deployed using GitHub Codespaces. Once you are logged into GitHub, click the below icon and wait for 2 minutes for codespaces to be ready.
 
 Refer to instructions in the [Codespace](./Codespace) directory for importing the sonic image.
