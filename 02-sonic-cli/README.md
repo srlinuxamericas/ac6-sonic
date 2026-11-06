@@ -65,6 +65,12 @@ ping -c 3 192.168.10.3
 
 We are now ready to start configuring the fabric for EVPN.
 
+We will be using a mix of CLI and gNMI for configuration.
+
+Leafs will be configured using CLI.
+
+Spines will be configured using gNMI. All gNMI commands will be executed from the VM using `gnmic`.
+
 The first step is to configure BGP for underlay.
 
 ![image](../diagrams/bgp-underlay.png)
@@ -83,7 +89,7 @@ Then, get into configuration mode by entering:
 config
 ```
 
-BGP underlay configuration on Leaf11:
+BGP underlay configuration on **Leaf11**:
 
 ```bash
 router bgp 64501
@@ -94,15 +100,12 @@ router bgp 64501
  !
  address-family ipv4 unicast
   network 1.1.1.1/32
-  redistribute connected
-  neighbor 192.168.10.3 soft-reconfiguration inbound
-  neighbor 192.168.12.3 soft-reconfiguration inbound
  exit-address-family
  !
 exit
 ```
 
-BGP underlay configuration on Leaf12:
+BGP underlay configuration on **Leaf12**:
 
 ```bash
 router bgp 64502
@@ -113,52 +116,55 @@ router bgp 64502
  !
  address-family ipv4 unicast
   network 2.2.2.2/32
-  redistribute connected
-  neighbor 192.168.20.3 soft-reconfiguration inbound
-  neighbor 192.168.22.3 soft-reconfiguration inbound
  exit-address-family
  !
 exit
 ```
 
-BGP underlay configuration on Spine11:
+BGP underlay configuration on **Spine11** using gNMI:
+
+Run the command from the VM.
 
 ```bash
-router bgp 64500
- bgp router-id 11.11.11.11
- no bgp ebgp-requires-policy
- neighbor 192.168.10.2 remote-as 64501
- !
- neighbor 192.168.20.2 remote-as 64502
- !
- address-family ipv4 unicast
-  network 11.11.11.11/32
-  redistribute connected
-  neighbor 192.168.10.2 soft-reconfiguration inbound
-  neighbor 192.168.20.2 soft-reconfiguration inbound
- exit-address-family
- !
-exit
+gnmic -a spine11:8080 --insecure \
+  -e json_ietf set \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS/default' \
+  --update-value '{"vrf_name":"default","local_asn":"64500","ebgp_requires_policy": "false","default_ipv4_unicast": "true","load_balance_mp_relax": "true","router_id": "11.11.11.11"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF/default|ipv4_unicast' \
+  --update-value '{"max_ebgp_paths": "64"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK' \
+  --update-value '{"default|ipv4_unicast|11.11.11.11/32": {}}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.10.2' \
+  --update-value '{"asn": "64501"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.22.2' \
+  --update-value '{"asn": "64502"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.10.2|ipv4_unicast' \
+  --update-value '{"admin_status": "up"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.22.2|ipv4_unicast' \
+  --update-value '{"admin_status": "up"}'
 ```
 
-BGP underlay configuration on Spine12:
+BGP underlay configuration on **Spine12** using gNMI:
+
+Run the command from the VM.
 
 ```bash
-router bgp 64500
- bgp router-id 22.22.22.22
- no bgp ebgp-requires-policy
- neighbor 192.168.12.2 remote-as 64501
- !
- neighbor 192.168.22.2 remote-as 64502
- !
- address-family ipv4 unicast
-  network 22.22.22.22/32
-  redistribute connected
-  neighbor 192.168.12.2 soft-reconfiguration inbound
-  neighbor 192.168.22.2 soft-reconfiguration inbound
- exit-address-family
- !
-exit
+gnmic -a spine12:8080 --insecure \
+  -e json_ietf set \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS/default' \
+  --update-value '{"vrf_name":"default","local_asn":"64500","ebgp_requires_policy": "false","default_ipv4_unicast": "true","load_balance_mp_relax": "true","router_id": "22.22.22.22"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF/default|ipv4_unicast' \
+  --update-value '{"max_ebgp_paths": "64"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK' \
+  --update-value '{"default|ipv4_unicast|22.22.22.22/32": {}}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.12.2' \
+  --update-value '{"asn": "64501"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.20.2' \
+  --update-value '{"asn": "64502"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.12.2|ipv4_unicast' \
+  --update-value '{"admin_status": "up"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.20.2|ipv4_unicast' \
+  --update-value '{"admin_status": "up"}'
 ```
 
 ### BGP Underlay Verification
@@ -166,7 +172,7 @@ exit
 The BGP underlay sessions should be UP now. Check using the following command on the `spine11` (while inside config mode).
 
 ```bash
-do show ip bgp summary
+do show bgp summary
 ```
 
 The output below confirms that IPv4 BGP neighbor sessions are established between `spine11` and the 2 Leaf nodes.
@@ -195,7 +201,7 @@ For establishing overlay BGP session between Leaf1 and Leaf2, we will use the Lo
 
 ### BGP Overlay Configuration
 
-BGP Overlay configuration on Leaf11:
+BGP Overlay configuration on **Leaf11** using FRR CLI:
 
 ```bash
 router bgp 64501
@@ -218,7 +224,7 @@ exit
 !
 ```
 
-BGP Overlay configuration on Leaf12:
+BGP Overlay configuration on **Leaf12** using FRR CLI:
 
 ```bash
 router bgp 64502
@@ -241,28 +247,42 @@ exit
 !
 ```
 
-BGP Overlay configuration on both spines (Copy and paste to both spines):
+BGP Overlay configuration on both **Spine11** using gNMI:
 
 ```bash
-router bgp 64500
- neighbor 1.1.1.1 remote-as 64501
- neighbor 1.1.1.1 update-source Loopback0
- neighbor 1.1.1.1 ebgp-multihop 2
- neighbor 2.2.2.2 remote-as 64502
- neighbor 2.2.2.2 update-source Loopback0
- neighbor 2.2.2.2 ebgp-multihop 2
- !
- address-family l2vpn evpn
-  neighbor 1.1.1.1 activate
-  neighbor 2.2.2.2 activate
- exit-address-family
-address-family ipv4 unicast
-  no neighbor 1.1.1.1 activate
-address-family ipv4 unicast
-  no neighbor 2.2.2.2 activate
- !
-exit
-!
+gnmic -a spine11:8080 --insecure \
+  -e json_ietf set \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|1.1.1.1' \
+  --update-value '{"asn": "64501","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|2.2.2.2' \
+  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|ipv4_unicast' \
+  --update-value '{"admin_status": "down"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|l2vpn_evpn' \
+  --update-value '{"admin_status": "up"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|ipv4_unicast' \
+  --update-value '{"admin_status": "down"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|l2vpn_evpn' \
+  --update-value '{"admin_status": "up"}'
+```
+
+BGP Overlay configuration on both **Spine12** using gNMI:
+
+```bash
+gnmic -a spine12:8080 --insecure \
+  -e json_ietf set \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|1.1.1.1' \
+  --update-value '{"asn": "64501","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|2.2.2.2' \
+  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|ipv4_unicast' \
+  --update-value '{"admin_status": "down"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|l2vpn_evpn' \
+  --update-value '{"admin_status": "up"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|ipv4_unicast' \
+  --update-value '{"admin_status": "down"}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|l2vpn_evpn' \
+  --update-value '{"admin_status": "up"}'
 ```
 
 ### BGP Overlay Verification
@@ -296,7 +316,7 @@ The objective is to establish a connection between Client 1 (connected to Leaf1)
 
 ### Configuring VXLAN
 
-Configuring VXLAN on Leaf11 - using **SONiC bash CLI**:
+Configuring VXLAN on **Leaf11** - using **SONiC bash CLI**:
 
 ```bash
 bash << 'EOF'
@@ -305,7 +325,7 @@ sudo config vxlan evpn_nvo add nvo vtep
 EOF
 ```
 
-Configuring VXLAN on Leaf12:
+Configuring VXLAN on **Leaf12** - using **SONiC bash CLI**::
 
 ```bash
 bash << 'EOF'
@@ -323,7 +343,7 @@ In this step, we will configure a mac-vrf or VLAN on each Leaf and add the clien
 | Leaf1 | `110` | `10110` | `Ethernet36` | untagged |
 | Leaf2 | `110` | `10110` | `Ethernet36` | untagged |
 
-EVPN-VXLAN configuration Leaf11 - using **SONiC bash CLI**:
+EVPN-VXLAN configuration on **Leaf11** - using **SONiC bash CLI**:
 
 ```bash
 bash << 'EOF'
@@ -335,7 +355,7 @@ sudo config save -y
 EOF
 ```
 
-EVPN-VXLAN configuration on Leaf12 - using **SONiC bash CLI**:
+EVPN-VXLAN configuration on **Leaf12** - using **SONiC bash CLI**:
 
 ```bash
 bash << 'EOF'
@@ -349,7 +369,7 @@ EOF
 
 Enable BGP to advertise VNI:
 
-On Leaf11, run the following command **Using FRR CLI**:
+On **Leaf11**, run the following command **Using FRR CLI**:
 
 ```bash
 router bgp 64501
@@ -357,7 +377,7 @@ router bgp 64501
   advertise-all-vni
 ```
 
-On Leaf12, run the following command **Using FRR CLI**:
+On **Leaf12**, run the following command **Using FRR CLI**:
 
 ```bash
 router bgp 64502
@@ -406,7 +426,7 @@ The objective is to connect Client 2 and Client 4 over a Layer 3 EVPN.
 
 Client2 & 4 are Layer 3 clients with IPs in different subnets.
 
-Client2 Layer 3 interface configuration on Leaf11:
+Client2 Layer 3 interface configuration on **Leaf11**:
 
 Using **SONiC bash CLI**:
 
@@ -418,7 +438,7 @@ sudo config vlan member add -u 200 Ethernet40
 EOF
 ```
 
-Client4 Layer 3 interface configuration on Leaf12:
+Client4 Layer 3 interface configuration on **Leaf12**:
 
 Using **SONiC bash CLI**:
 
@@ -438,7 +458,7 @@ VXLAN tunnels were configured as part of Layer 2 section.
 
 ### Configuring VRF in BGP
 
-VRF configuration on Leaf11:
+VRF configuration on **Leaf11**:
 
 Using **FRR CLI**:
 
@@ -465,7 +485,7 @@ router bgp 64501 vrf Vrf_Type5
 exit
 ```
 
-VRF configuration on Leaf12:
+VRF configuration on **Leaf12**:
 
 Using **FRR CLI**:
 
@@ -496,7 +516,7 @@ exit
 
 We will include the client facing interface and the vxlan tunnel in this instance.
 
-EVPN-VXLAN configuration on Leaf11:
+EVPN-VXLAN configuration on **Leaf11**:
 
 Using **SONiC bash CLI**:
 
@@ -514,7 +534,7 @@ sudo config save -y
 EOF
 ```
 
-EVPN-VXLAN configuration on Leaf12:
+EVPN-VXLAN configuration on **Leaf12**:
 
 Using **SONiC bash CLI**:
 
