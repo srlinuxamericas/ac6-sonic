@@ -59,7 +59,7 @@ topology:
       kind: linux
       image: ghcr.io/openconfig/gnmic:0.47.0
       binds:
-        - configs/gnmic/gnmic-config.yml:/gnmic-config.yml:ro
+        02-sonic-cli/configs/gnmic/gnmic-config.yml:/gnmic-config.yml:ro
       cmd: --config /gnmic-config.yml --log subscribe
 
     gnmic-counters:
