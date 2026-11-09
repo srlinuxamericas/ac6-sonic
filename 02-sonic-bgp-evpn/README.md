@@ -201,10 +201,12 @@ gnmic -a spine12:8080 --insecure \
 
 ### BGP Underlay Verification
 
-The BGP underlay sessions should be UP now. Check using the following command on the `spine11` (while inside config mode).
+The BGP underlay sessions should be UP now. Check using the following command on **spine11**.
+
+Login to `spine11` and change to FRR CLI using `vtysh`.
 
 ```bash
-do show bgp summary
+show bgp summary
 ```
 
 The output below confirms that IPv4 BGP neighbor sessions are established between `spine11` and the 2 Leaf nodes.
