@@ -60,7 +60,10 @@ Once copied, we can enter in the `~/vrnetlab/sonic` image and build the containe
 cd ~/vrnetlab/sonic && make
 ```
 
-The resulting image will be tagged as `vrnetlab/sonic_sonic-vs:202405`. This can be verified using `docker images` command.
+The resulting image will be tagged as `vrnetlab/sonic_sonic-vs:202405`. This can be verified using 
+
+```docker images 
+```
 
 ```bash
 REPOSITORY                TAG       IMAGE ID       CREATED          SIZE
