@@ -35,6 +35,18 @@ For all configuration and show commands listed in this workshop, we specify the 
 
 All 4 clients will be running [Alpine Linux](https://alpinelinux.org/)
 
+## 0 Deploying the lab
+
+Login to the VM using the credentials on your sheet.
+
+Install Containerlab on your VM.
+
+```
+curl -sL https://containerlab.dev/setup | sudo -E bash -s "all"
+```
+
+Logout and login for the sudo privileges to take effect.
+
 ## VM-based nodes in containerlab
 
 VM nodes integration in containerlab is based on the [hellt/vrnetlab](https://github.com/hellt/vrnetlab) project which is a fork of `vrnetlab/vrnetlab` where things were added to make it work with the container networking.
