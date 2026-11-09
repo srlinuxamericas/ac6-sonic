@@ -143,7 +143,7 @@ At the end of the deployment, the following table will be displayed. Wait for th
 To monitor the boot process of SONiC, you can open a new terminal and run the following command:
 
 ```bash
-sudo docker logs -f leaf11
+containerlab logs --name ac6-sonic -n leaf11 --tail 100 --follow --timestamps
 ```
 
 > the SONiC boot time is approximately 1 minute.
