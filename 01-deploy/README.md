@@ -62,7 +62,8 @@ cd ~/vrnetlab/sonic && make
 
 The resulting image will be tagged as `vrnetlab/sonic_sonic-vs:202405`. This can be verified using 
 
-```docker images 
+```
+docker images 
 ```
 
 ```bash
