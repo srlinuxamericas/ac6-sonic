@@ -18,8 +18,7 @@ Shortcut links to major sections in this README. Follow the instructions in the 
 | [04-SONiC Dashboards](./04-sonic-dashboards) |
 | [05-SONiC packet capture](./05-sonic-pcap) |
 | [06-SONiC Maintenance](./06-sonic-mw) |
-| [07-NETCONF with SONiC](./07-sonic-netconf) |
-| [08-Ansible with SONiC](./08-sonic-ansible) |
+| [07-Ansible with SONiC](./08-sonic-ansible) |
 
 ## Lab Environment
 
@@ -41,7 +40,10 @@ The objective of the hands on section of this workshop is the following:
 - Automate configuration tasks
 - Simulate a Maintenance operation
 
-                [NOTE: During today's workshop we will be using dedicated computes and not Codespaces.] 
+
+
+> <p style="color:red"> !!! NOTE: During today's workshop we will be using dedicated computes and not Codespaces.</p>
+
 ### Using Codespaces 
 This lab can be deployed using GitHub Codespaces. Once you are logged into GitHub, click the below icon and wait for 2 minutes for codespaces to be ready.
 

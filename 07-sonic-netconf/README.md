@@ -1,1 +1,0 @@
-# NETCONF Operations with SONiC

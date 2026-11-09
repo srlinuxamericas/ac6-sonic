@@ -579,3 +579,6 @@ PING 10.90.1.1 (10.90.1.1) 56(84) bytes of data.
 rtt min/avg/max/mdev = 2.066/2.842/4.184/0.952 ms
 ```
 
+This completes the BGP and EVPN section.
+
+## Next Section:   [gNMI with SONiC](https://github.com/srlinuxamericas/ac6-sonic/tree/main/03-sonic-gnmi)

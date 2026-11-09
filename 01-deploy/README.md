@@ -203,3 +203,7 @@ de4cca2e012d   docker-sonic-gnmi:latest             "/usr/local/bin/supe…"   3
 6173b320e176   docker-orchagent:latest              "/usr/bin/docker-ini…"   3 minutes ago        Up 3 minutes                  swss
 3f033fe06c49   docker-database:latest               "/usr/local/bin/dock…"   3 minutes ago        Up 3 minutes                  database
 ```
+
+This completes the deployment of the lab.
+
+## Next Section:   [SONiC BGP and EVPN](https://github.com/srlinuxamericas/ac6-sonic/tree/main/02-sonic-cli)
