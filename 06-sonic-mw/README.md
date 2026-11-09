@@ -179,7 +179,7 @@ gnmic -a spine12:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG
 If **Spine11** was taken out for maintanance, run the below commands from the VM to remove the route policy from the BGP neighbors:
 
 ```bash
-gnmic -a spine11:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.12.2|ipv4_unicast/route_map_out'   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.22.2|ipv4_unicast/route_map_out'
+gnmic -a spine11:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.10.2|ipv4_unicast/route_map_out'   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.20.2|ipv4_unicast/route_map_out'
 ```
 
 ```bash

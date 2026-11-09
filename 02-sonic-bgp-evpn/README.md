@@ -136,11 +136,11 @@ gnmic -a spine11:8080 --insecure \
   --update-value '{"default|ipv4_unicast|11.11.11.11/32": {}}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.10.2' \
   --update-value '{"asn": "64501"}' \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.22.2' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.20.2' \
   --update-value '{"asn": "64502"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.10.2|ipv4_unicast' \
   --update-value '{"admin_status": "up"}' \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.22.2|ipv4_unicast' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.20.2|ipv4_unicast' \
   --update-value '{"admin_status": "up"}'
 ```
 
@@ -159,11 +159,11 @@ gnmic -a spine12:8080 --insecure \
   --update-value '{"default|ipv4_unicast|22.22.22.22/32": {}}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.12.2' \
   --update-value '{"asn": "64501"}' \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.20.2' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.22.2' \
   --update-value '{"asn": "64502"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.12.2|ipv4_unicast' \
   --update-value '{"admin_status": "up"}' \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.20.2|ipv4_unicast' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.22.2|ipv4_unicast' \
   --update-value '{"admin_status": "up"}'
 ```
 
