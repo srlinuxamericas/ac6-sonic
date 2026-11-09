@@ -181,7 +181,7 @@ gnmic -a spine12:8080 --insecure \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF/default|ipv4_unicast' \
   --update-value '{"max_ebgp_paths": "64"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK' \
-  --update-value '{"default|ipv4_unicast|22.22.22.22/32": {}}' \
+  --update-value '{"default|ipv4_unicast|22.22.22.22/32": {}}'
 ```
 
 Configure BGP Neighbors:
