@@ -160,6 +160,18 @@ gnmic -a spine11:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
+Login to **Spine11** and save the config.
+
+```bash
+sudo config save -y
+```
+
+Save the config on **Spine11**:
+
+```bash
+sudo config reload -y
+```
+
 BGP underlay configuration on **Spine12** using gNMI:
 
 Run the commands from the VM.
@@ -197,6 +209,18 @@ gnmic -a spine12:8080 --insecure \
   --update-value '{"admin_status": "up"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.22.2|ipv4_unicast' \
   --update-value '{"admin_status": "up"}'
+```
+
+Login to **Spine12** and save the config.
+
+```bash
+sudo config save -y
+```
+
+Save the config on **Spine12**:
+
+```bash
+sudo config reload -y
 ```
 
 ### BGP Underlay Verification
@@ -311,6 +335,18 @@ gnmic -a spine11:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
+Login to **Spine11** and save the config.
+
+```bash
+sudo config save -y
+```
+
+Save the config on **Spine11**:
+
+```bash
+sudo config reload -y
+```
+
 BGP Overlay configuration on **Spine12** using gNMI:
 
 Run the commands from the VM:
@@ -339,6 +375,18 @@ gnmic -a spine12:8080 --insecure \
   --update-value '{"admin_status": "down"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|l2vpn_evpn' \
   --update-value '{"admin_status": "up"}'
+```
+
+Login to **Spine12** and save the config.
+
+```bash
+sudo config save -y
+```
+
+Save the config on **Spine12**:
+
+```bash
+sudo config reload -y
 ```
 
 ### BGP Overlay Verification
