@@ -59,21 +59,21 @@ topology:
       kind: linux
       image: ghcr.io/openconfig/gnmic:0.47.0
       binds:
-        - 02-sonic-cli/configs/gnmic/gnmic-config.yml:/gnmic-config.yml:ro
+        - 02-sonic-bgp-evpn/configs/gnmic/gnmic-config.yml:/gnmic-config.yml:ro
       cmd: --config /gnmic-config.yml --log subscribe
 
     gnmic-counters:
       kind: linux
       image: ghcr.io/openconfig/gnmic:0.47.0
       binds:
-        - 02-sonic-cli/configs/gnmic/gnmic-counters.yml:/gnmic-config.yml:ro
+        - 02-sonic-bgp-evpn/configs/gnmic/gnmic-counters.yml:/gnmic-config.yml:ro
       cmd: --config /gnmic-config.yml --log subscribe
 
     prometheus:
       kind: linux
       image: quay.io/prometheus/prometheus:v2.54.1
       binds:
-        - 02-sonic-cli/configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+        - 02-sonic-bgp-evpn/configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       cmd: --config.file=/etc/prometheus/prometheus.yml
       ports:
         - 9090:9090
@@ -82,9 +82,9 @@ topology:
       kind: linux
       image: grafana/grafana:latest
       binds:
-        - 02-sonic-cli/configs/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
-        - 02-sonic-cli/configs/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
-        - 02-sonic-cli/configs/grafana/dashboards:/var/lib/grafana/dashboards
+        - 02-sonic-bgp-evpn/configs/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+        - 02-sonic-bgp-evpn/configs/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
+        - 02-sonic-bgp-evpn/configs/grafana/dashboards:/var/lib/grafana/dashboards
       ports:
         - 3000:3000
       env:
