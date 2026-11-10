@@ -61,6 +61,31 @@ Example on Leaf11 to spine11:
 ping -c 3 192.168.10.3
 ```
 
+## SONiC CLI Introduction
+
+SONiC NOS has 2 main Command Line Interfaces:
+
+- SONiC (default cli) - sample prompt `admin@leaf1:~$`
+
+  The SONiC configuration stores VLANs, interfaces, VRFs, and VXLAN mappings. Configuration is saved in `config_db.json`.
+  
+  To save SONiC configuration run:
+
+  ```bash
+  sudo config save -y
+  ```
+- FRR (enter using `vtysh` from SONiC bash CLI) - sample prompt `leaf1#`
+
+  FRR stores BGP EVPN configuration and is saved in `/etc/frr/frr.conf`
+
+  To save FRR configuration run:
+
+  ```bash
+  sudo vtysh -c "write memory"
+  ```
+
+For all configuration and show commands listed in this workshop, we specify the CLI from where it should be executed.
+
 ## Configure BGP Underlay
 
 We are now ready to start configuring the fabric for EVPN.
