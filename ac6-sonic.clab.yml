@@ -27,26 +27,26 @@ topology:
     spine12:
       mgmt-ipv4: 172.40.40.5
 
-    client11:
+    client1:
       kind: linux
       mgmt-ipv4: 172.40.40.10
       exec:
         - ip address add 172.16.10.50/24 dev eth1
 
-    client12:
+    client2:
       kind: linux
       mgmt-ipv4: 172.40.40.11
       exec:
         - ip address add 10.80.1.1/24 dev eth1
         - ip route add 10.90.1.0/24 via 10.80.1.254
 
-    client13:
+    client3:
       kind: linux
       mgmt-ipv4: 172.40.40.12
       exec:
         - ip address add 172.16.10.60/24 dev eth1
 
-    client14:
+    client4:
       kind: linux
       mgmt-ipv4: 172.40.40.13
       exec:
@@ -101,8 +101,8 @@ topology:
     - endpoints: [ "leaf11:eth2", "spine12:eth1" ]
     - endpoints: [ "leaf12:eth2", "spine12:eth2" ]
     # leaf-client links
-    - endpoints: [ "client11:eth1", "leaf11:eth10" ]
-    - endpoints: [ "client12:eth1", "leaf11:eth11" ]
-    - endpoints: [ "client13:eth1", "leaf12:eth10" ]
-    - endpoints: [ "client14:eth1", "leaf12:eth11" ]
+    - endpoints: [ "client1:eth1", "leaf11:eth10" ]
+    - endpoints: [ "client2:eth1", "leaf11:eth11" ]
+    - endpoints: [ "client3:eth1", "leaf12:eth10" ]
+    - endpoints: [ "client4:eth1", "leaf12:eth11" ]
 
