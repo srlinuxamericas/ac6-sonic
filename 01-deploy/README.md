@@ -10,30 +10,19 @@ Each workshop participant will be provided with the below topology consisting of
 
 All 4 switch nodes will be running the latest SONiC 202605 release.
 
-SONiC NOS has 2 main Command Line Interfaces:
-
-- SONiC (default cli) - sample prompt `admin@leaf1:~$`
-
-  The SONiC configuration stores VLANs, interfaces, VRFs, and VXLAN mappings. Configuration is saved in `config_db.json`.
-  
-  To save SONiC configuration run:
-
-  ```bash
-  sudo config save -y
-  ```
-- FRR (enter using `vtysh` from SONiC bash CLI) - sample prompt `leaf1#`
-
-  FRR stores BGP EVPN configuration and is saved in `/etc/frr/frr.conf`
-
-  To save FRR configuration run:
-
-  ```bash
-  sudo vtysh -c "write memory"
-  ```
-
-For all configuration and show commands listed in this workshop, we specify the CLI from where it should be executed.
-
 All 4 clients will be running [Alpine Linux](https://alpinelinux.org/)
+
+## Install Containerlab
+
+To learn more about Containerlab, refer to [Nanog 93 Containerlab Workshop](https://github.com/srlinuxamericas/n93-clab)
+
+Install Containerlab on your VM.
+
+```bash
+curl -sL https://containerlab.dev/setup | sudo -E bash -s "all"
+```
+
+### *Logout and login for the sudo privileges to take effect
 
 ## VM-based nodes in containerlab
 
