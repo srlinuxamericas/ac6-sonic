@@ -102,7 +102,7 @@ The first step is to configure BGP for underlay.
 
 ### BGP Underlay Configuration
 
-BGP configuration will be done from `FRR` CLI. After logging into the node, enter `FRR` CLI using:
+BGP configuration will be done from **Leaf11** and **Leaf12**`FRR` CLI. After logging into the node, enter `FRR` CLI using:
 
 ```bash
 vtysh
