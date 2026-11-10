@@ -4,7 +4,7 @@
 
 Each workshop participant will be provided with the below topology consisting of 2 leaf and 2 spines nodes along with 2 clients. The Leaf-Spine architecture is typical in a Data Center environment and clients are simulating workloads or VMs.
 
-![image](diagrams/lab-topology.png)
+![image](../diagrams/lab-topology.png)
 
 ## NOS (Network Operating System)
 
