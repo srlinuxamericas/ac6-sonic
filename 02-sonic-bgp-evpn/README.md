@@ -49,7 +49,7 @@ lo                     127.0.0.1/16         up/up         N/A             N/A
 
 ### IPv4 Link Addressing
 
-![image](../diagrams/lab-ipv4.png)
+![image](../diagrams/lab-ipv4-as.png)
 
 ### Verify reachability between devices
 
