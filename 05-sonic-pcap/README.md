@@ -75,7 +75,7 @@ After 10 seconds, the command exits.
 
 Transfer the pcap file to your laptop and open it using wireshark to look at the contents.
 
-![image](diagrams/sonic-pcap.png)
+![image](../diagrams/sonic-pcap.png)
 
 ## Pcap in SONiC
 
@@ -121,7 +121,7 @@ This commands captures the packets for 10 seconds and writes them to a file call
 
 Transfer the pcap file to your laptop and open it using wireshark to look at the contents.
 
-![image](diagrams/sonic-tcpdump.png)
+![image](../diagrams/sonic-tcpdump.png)
 
 This completes the Packet capture section.
 
