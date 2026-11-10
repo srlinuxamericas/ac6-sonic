@@ -27,26 +27,26 @@ topology:
     spine12:
       mgmt-ipv4: 172.40.40.5
 
-    client11:
+    client1:
       kind: linux
       mgmt-ipv4: 172.40.40.10
       exec:
         - ip address add 172.16.10.50/24 dev eth1
 
-    client12:
+    client2:
       kind: linux
       mgmt-ipv4: 172.40.40.11
       exec:
         - ip address add 10.80.1.1/24 dev eth1
         - ip route add 10.90.1.0/24 via 10.80.1.254
 
-    client13:
+    client3:
       kind: linux
       mgmt-ipv4: 172.40.40.12
       exec:
         - ip address add 172.16.10.60/24 dev eth1
 
-    client14:
+    client4:
       kind: linux
       mgmt-ipv4: 172.40.40.13
       exec:
@@ -59,21 +59,21 @@ topology:
       kind: linux
       image: ghcr.io/openconfig/gnmic:0.47.0
       binds:
-        - 02-sonic-cli/configs/gnmic/gnmic-config.yml:/gnmic-config.yml:ro
+        - 02-sonic-bgp-evpn/configs/gnmic/gnmic-config.yml:/gnmic-config.yml:ro
       cmd: --config /gnmic-config.yml --log subscribe
 
     gnmic-counters:
       kind: linux
       image: ghcr.io/openconfig/gnmic:0.47.0
       binds:
-        - 02-sonic-cli/configs/gnmic/gnmic-counters.yml:/gnmic-config.yml:ro
+        - 02-sonic-bgp-evpn/configs/gnmic/gnmic-counters.yml:/gnmic-config.yml:ro
       cmd: --config /gnmic-config.yml --log subscribe
 
     prometheus:
       kind: linux
       image: quay.io/prometheus/prometheus:v2.54.1
       binds:
-        - 02-sonic-cli/configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+        - 02-sonic-bgp-evpn/configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       cmd: --config.file=/etc/prometheus/prometheus.yml
       ports:
         - 9090:9090
@@ -82,9 +82,9 @@ topology:
       kind: linux
       image: grafana/grafana:latest
       binds:
-        - 02-sonic-cli/configs/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
-        - 02-sonic-cli/configs/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
-        - 02-sonic-cli/configs/grafana/dashboards:/var/lib/grafana/dashboards
+        - 02-sonic-bgp-evpn/configs/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+        - 02-sonic-bgp-evpn/configs/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
+        - 02-sonic-bgp-evpn/configs/grafana/dashboards:/var/lib/grafana/dashboards
       ports:
         - 3000:3000
       env:
@@ -101,8 +101,8 @@ topology:
     - endpoints: [ "leaf11:eth2", "spine12:eth1" ]
     - endpoints: [ "leaf12:eth2", "spine12:eth2" ]
     # leaf-client links
-    - endpoints: [ "client11:eth1", "leaf11:eth10" ]
-    - endpoints: [ "client12:eth1", "leaf11:eth11" ]
-    - endpoints: [ "client13:eth1", "leaf12:eth10" ]
-    - endpoints: [ "client14:eth1", "leaf12:eth11" ]
+    - endpoints: [ "client1:eth1", "leaf11:eth10" ]
+    - endpoints: [ "client2:eth1", "leaf11:eth11" ]
+    - endpoints: [ "client3:eth1", "leaf12:eth10" ]
+    - endpoints: [ "client4:eth1", "leaf12:eth11" ]
 

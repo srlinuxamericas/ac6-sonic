@@ -206,4 +206,4 @@ de4cca2e012d   docker-sonic-gnmi:latest             "/usr/local/bin/supe…"   3
 
 This completes the deployment of the lab.
 
-## Next Section:   [SONiC BGP and EVPN](https://github.com/srlinuxamericas/ac6-sonic/tree/main/02-sonic-cli)
+## Next Section:   [SONiC BGP and EVPN](https://github.com/srlinuxamericas/ac6-sonic/tree/main/02-sonic-bgp-evpn)

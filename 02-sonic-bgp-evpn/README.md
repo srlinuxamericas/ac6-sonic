@@ -7,7 +7,7 @@ To save time, we will use a script to configure the link IP addresses on all dev
 On your VM, go to:
 
 ```bash
-cd ~/ac6-sonic/02-sonic-cli
+cd ~/ac6-sonic/02-sonic-bgp-evpn
 ```
 
 Then execute the script:
@@ -123,17 +123,33 @@ exit
 
 BGP underlay configuration on **Spine11** using gNMI:
 
-Run the command from the VM.
+Run the commands from the VM.
+
+Configure BGP:
 
 ```bash
 gnmic -a spine11:8080 --insecure \
   -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS/default' \
-  --update-value '{"vrf_name":"default","local_asn":"64500","ebgp_requires_policy": "false","default_ipv4_unicast": "true","load_balance_mp_relax": "true","router_id": "11.11.11.11"}' \
+  --update-value '{"vrf_name":"default","local_asn":"64500","ebgp_requires_policy": "false","default_ipv4_unicast": "true","load_balance_mp_relax": "true","router_id": "11.11.11.11"}'
+```
+
+Configure BGP Address Family:
+
+```bash
+gnmic -a spine11:8080 --insecure \
+  -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF/default|ipv4_unicast' \
   --update-value '{"max_ebgp_paths": "64"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK' \
-  --update-value '{"default|ipv4_unicast|11.11.11.11/32": {}}' \
+  --update-value '{"default|ipv4_unicast|11.11.11.11/32": {}}'
+```
+
+Configure BGP Neighbors:
+
+```bash
+gnmic -a spine11:8080 --insecure \
+  -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.10.2' \
   --update-value '{"asn": "64501"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.20.2' \
@@ -144,19 +160,47 @@ gnmic -a spine11:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
+Login to **Spine11** and save the config.
+
+```bash
+sudo config save -y
+```
+
+Save the config on **Spine11**:
+
+```bash
+sudo config reload -y
+```
+
 BGP underlay configuration on **Spine12** using gNMI:
 
-Run the command from the VM.
+Run the commands from the VM.
+
+Configure BGP:
 
 ```bash
 gnmic -a spine12:8080 --insecure \
   -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS/default' \
-  --update-value '{"vrf_name":"default","local_asn":"64500","ebgp_requires_policy": "false","default_ipv4_unicast": "true","load_balance_mp_relax": "true","router_id": "22.22.22.22"}' \
+  --update-value '{"vrf_name":"default","local_asn":"64500","ebgp_requires_policy": "false","default_ipv4_unicast": "true","load_balance_mp_relax": "true","router_id": "22.22.22.22"}'
+```
+
+Configure BGP Address Family:
+
+```bash
+gnmic -a spine12:8080 --insecure \
+  -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF/default|ipv4_unicast' \
   --update-value '{"max_ebgp_paths": "64"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK' \
-  --update-value '{"default|ipv4_unicast|22.22.22.22/32": {}}' \
+  --update-value '{"default|ipv4_unicast|22.22.22.22/32": {}}'
+```
+
+Configure BGP Neighbors:
+
+```bash
+gnmic -a spine12:8080 --insecure \
+  -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.12.2' \
   --update-value '{"asn": "64501"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|192.168.22.2' \
@@ -167,12 +211,26 @@ gnmic -a spine12:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
-### BGP Underlay Verification
-
-The BGP underlay sessions should be UP now. Check using the following command on the `spine11` (while inside config mode).
+Login to **Spine12** and save the config.
 
 ```bash
-do show bgp summary
+sudo config save -y
+```
+
+Save the config on **Spine12**:
+
+```bash
+sudo config reload -y
+```
+
+### BGP Underlay Verification
+
+The BGP underlay sessions should be UP now. Check using the following command on **spine11**.
+
+Login to `spine11` and change to FRR CLI using `vtysh`.
+
+```bash
+show bgp summary
 ```
 
 The output below confirms that IPv4 BGP neighbor sessions are established between `spine11` and the 2 Leaf nodes.
@@ -247,7 +305,11 @@ exit
 !
 ```
 
-BGP Overlay configuration on both **Spine11** using gNMI:
+BGP Overlay configuration on **Spine11** using gNMI:
+
+Run the commands from the VM:
+
+Configure BGP Neighbors:
 
 ```bash
 gnmic -a spine11:8080 --insecure \
@@ -255,7 +317,14 @@ gnmic -a spine11:8080 --insecure \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|1.1.1.1' \
   --update-value '{"asn": "64501","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|2.2.2.2' \
-  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}'
+```
+
+Configure BGP Neighbor Address Family:
+
+```bash
+gnmic -a spine11:8080 --insecure \
+  -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|ipv4_unicast' \
   --update-value '{"admin_status": "down"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|l2vpn_evpn' \
@@ -266,15 +335,38 @@ gnmic -a spine11:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
-BGP Overlay configuration on both **Spine12** using gNMI:
+Login to **Spine11** and save the config.
+
+```bash
+sudo config save -y
+```
+
+Save the config on **Spine11**:
+
+```bash
+sudo config reload -y
+```
+
+BGP Overlay configuration on **Spine12** using gNMI:
+
+Run the commands from the VM:
+
+Configure BGP Neighbors:
 
 ```bash
 gnmic -a spine12:8080 --insecure \
   -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|1.1.1.1' \
-  --update-value '{"asn": "64501","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-value '{"asn": "64501","ebgp_multihop_ttl": "2","local_addr": "22.22.22.22"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|2.2.2.2' \
-  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "22.22.22.22"}'
+```
+
+Configure BGP Neighbor Address Family:
+
+```bash
+gnmic -a spine12:8080 --insecure \
+  -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|ipv4_unicast' \
   --update-value '{"admin_status": "down"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|l2vpn_evpn' \
@@ -283,6 +375,18 @@ gnmic -a spine12:8080 --insecure \
   --update-value '{"admin_status": "down"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|l2vpn_evpn' \
   --update-value '{"admin_status": "up"}'
+```
+
+Login to **Spine12** and save the config.
+
+```bash
+sudo config save -y
+```
+
+Save the config on **Spine12**:
+
+```bash
+sudo config reload -y
 ```
 
 ### BGP Overlay Verification
