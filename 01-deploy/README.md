@@ -12,6 +12,18 @@ All 4 switch nodes will be running the latest SONiC 202605 release.
 
 All 4 clients will be running [Alpine Linux](https://alpinelinux.org/)
 
+## Install Containerlab
+
+To learn more about Containerlab, refer to [Nanog 93 Containerlab Workshop](https://github.com/srlinuxamericas/n93-clab)
+
+Install Containerlab on your VM.
+
+```bash
+curl -sL https://containerlab.dev/setup | sudo -E bash -s "all"
+```
+
+### *Logout and login for the sudo privileges to take effect
+
 ## VM-based nodes in containerlab
 
 VM nodes integration in containerlab is based on the [hellt/vrnetlab](https://github.com/hellt/vrnetlab) project which is a fork of `vrnetlab/vrnetlab` where things were added to make it work with the container networking.
