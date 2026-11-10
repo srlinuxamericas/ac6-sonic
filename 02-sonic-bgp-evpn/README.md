@@ -293,7 +293,7 @@ gnmic -a spine11:8080 --insecure \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|1.1.1.1' \
   --update-value '{"asn": "64501","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|2.2.2.2' \
-  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}'
 ```
 
 Configure BGP Neighbor Address Family:
@@ -321,9 +321,9 @@ Configure BGP Neighbors:
 gnmic -a spine12:8080 --insecure \
   -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|1.1.1.1' \
-  --update-value '{"asn": "64501","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-value '{"asn": "64501","ebgp_multihop_ttl": "2","local_addr": "22.22.22.22"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR/default|2.2.2.2' \
-  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "11.11.11.11"}' \
+  --update-value '{"asn": "64502","ebgp_multihop_ttl": "2","local_addr": "22.22.22.22"}'
 ```
 
 Configure BGP Neighbor Address Family:
