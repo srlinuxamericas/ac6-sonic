@@ -71,12 +71,10 @@ From your VM, run the below commands to push policy to **Spine11**:
 ```bash
 gnmic -a spine11:8080 -u admin -p admin --insecure \
   -e json_ietf set \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/COMMUNITY_SET' \
-  --update-value '{"CL_GSHUT": {"set_type": "STANDARD","action": "permit","community_member": ["graceful-shutdown"]}}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP_SET' \
   --update-value '{"RM_SPINE_GSHUT_OUT": {}}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP/RM_SPINE_GSHUT_OUT|10' \
-  --update-value '{"route_operation": "permit","set_community_ref": "CL_GSHUT"}'
+  --update-value '{"route_operation": "permit","set_community_inline": ["graceful-shutdown","additive"]}'
 ```
 
 From your VM, run the below commands to push policy to **Spine12**:
@@ -84,12 +82,10 @@ From your VM, run the below commands to push policy to **Spine12**:
 ```bash
 gnmic -a spine12:8080 -u admin -p admin --insecure \
   -e json_ietf set \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/COMMUNITY_SET' \
-  --update-value '{"CL_GSHUT": {"set_type": "STANDARD","action": "permit","community_member": ["graceful-shutdown"]}}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP_SET' \
   --update-value '{"RM_SPINE_GSHUT_OUT": {}}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP/RM_SPINE_GSHUT_OUT|10' \
-  --update-value '{"route_operation": "permit","set_community_ref": "CL_GSHUT"}'
+  --update-value '{"route_operation": "permit","set_community_inline": ["graceful-shutdown","additive"]}'
 ```
 
 ## Send traffic

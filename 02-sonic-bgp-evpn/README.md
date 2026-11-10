@@ -98,7 +98,7 @@ Spines will be configured using gNMI. All gNMI commands will be executed from th
 
 The first step is to configure BGP for underlay.
 
-![image](../diagrams/bgp-underlay.png)
+![image](../diagrams/bgp-underlay-as.png)
 
 ### BGP Underlay Configuration
 
