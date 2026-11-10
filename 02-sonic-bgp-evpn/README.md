@@ -281,7 +281,7 @@ exit
 !
 ```
 
-BGP Overlay configuration on both **Spine11** using gNMI:
+BGP Overlay configuration on **Spine11** using gNMI:
 
 Run the commands from the VM:
 
@@ -311,7 +311,7 @@ gnmic -a spine11:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
-BGP Overlay configuration on both **Spine12** using gNMI:
+BGP Overlay configuration on **Spine12** using gNMI:
 
 Run the commands from the VM:
 
