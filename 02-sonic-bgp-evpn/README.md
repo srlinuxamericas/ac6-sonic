@@ -184,17 +184,20 @@ gnmic -a spine11:8080 --insecure \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.20.2|ipv4_unicast' \
   --update-value '{"admin_status": "up"}'
 ```
-
-Login to **Spine11** and save the config.
-
+Verify on **Spine11** if configurations were updated:
 ```bash
-sudo config save -y
+gnmic -a spine11:8080 --insecure \
+  -e json_ietf get \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS' \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF' \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK' \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR' \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF'
 ```
-
-Save the config on **Spine11**:
+Login to **Spine11**. Save the config and Reload.
 
 ```bash
-sudo config reload -y
+sudo config save -y && sudo config reload -y
 ```
 
 BGP underlay configuration on **Spine12** using gNMI:
@@ -236,16 +239,21 @@ gnmic -a spine12:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
-Login to **Spine12** and save the config.
-
+Verify on **Spine12** if configurations were updated:
 ```bash
-sudo config save -y
+gnmic -a spine12:8080 --insecure \
+  -e json_ietf get \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS' \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF' \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK' \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR' \
+  --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF'
 ```
 
-Save the config on **Spine12**:
+Login to **Spine11**. Save the config and Reload.
 
 ```bash
-sudo config reload -y
+sudo config save -y && sudo config reload -y
 ```
 
 ### BGP Underlay Verification
@@ -360,16 +368,10 @@ gnmic -a spine11:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
-Login to **Spine11** and save the config.
+Login to **Spine11** and save the config and reload
 
 ```bash
-sudo config save -y
-```
-
-Save the config on **Spine11**:
-
-```bash
-sudo config reload -y
+sudo config save -y && sudo config reload -y
 ```
 
 BGP Overlay configuration on **Spine12** using gNMI:
@@ -402,16 +404,10 @@ gnmic -a spine12:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
-Login to **Spine12** and save the config.
+Login to **Spine12** and save the config and reload.
 
 ```bash
-sudo config save -y
-```
-
-Save the config on **Spine12**:
-
-```bash
-sudo config reload -y
+sudo config save -y && sudo config reload -y
 ```
 
 ### BGP Overlay Verification
@@ -585,6 +581,46 @@ IP addresses on the client side are pre-configured during deployment. This can b
 
 VXLAN tunnels were configured as part of Layer 2 section.
 
+### Configuring Layer 3 EVPN-VXLAN
+
+We will include the client facing interface and the vxlan tunnel in this instance.
+
+EVPN-VXLAN configuration on **Leaf11**:
+
+Using **SONiC bash CLI**:
+
+```bash
+bash << 'EOF'
+sudo config vrf add Vrf_Type5
+sudo config interface vrf bind Vlan200 Vrf_Type5
+sudo config interface ip add Vlan200 10.80.1.254/24
+sudo config vlan add 999
+sudo config interface vrf bind Vlan999 Vrf_Type5
+sudo config vxlan map add vtep 200 10200
+sudo config vxlan map add vtep 999 10999
+sudo config vrf add_vrf_vni_map Vrf_Type5 10999
+sudo config save -y
+EOF
+```
+
+EVPN-VXLAN configuration on **Leaf12**:
+
+Using **SONiC bash CLI**:
+
+```bash
+bash << 'EOF'
+sudo config vrf add Vrf_Type5
+sudo config interface vrf bind Vlan240 Vrf_Type5
+sudo config interface ip add Vlan240 10.90.1.254/24
+sudo config vlan add 999
+sudo config interface vrf bind Vlan999 Vrf_Type5
+sudo config vxlan map add vtep 240 10240
+sudo config vxlan map add vtep 999 10999
+sudo config vrf add_vrf_vni_map Vrf_Type5 10999
+sudo config save -y
+EOF
+```
+
 ### Configuring VRF in BGP
 
 VRF configuration on **Leaf11**:
@@ -640,45 +676,22 @@ router bgp 64502 vrf Vrf_Type5
  exit-address-family
 exit
 ```
-
-### Configuring Layer 3 EVPN-VXLAN
-
-We will include the client facing interface and the vxlan tunnel in this instance.
-
-EVPN-VXLAN configuration on **Leaf11**:
-
-Using **SONiC bash CLI**:
+### Verify routes are present under vrf Vrf_Type5
+Log into **Leaf11** and **Leaf12**
 
 ```bash
-bash << 'EOF'
-sudo config vrf add Vrf_Type5
-sudo config interface vrf bind Vlan200 Vrf_Type5
-sudo config interface ip add Vlan200 10.80.1.254/24
-sudo config vlan add 999
-sudo config interface vrf bind Vlan999 Vrf_Type5
-sudo config vxlan map add vtep 200 10200
-sudo config vxlan map add vtep 999 10999
-sudo config vrf add_vrf_vni_map Vrf_Type5 10999
-sudo config save -y
-EOF
+show ip route vrf Vrf_Type5 bgp
 ```
 
-EVPN-VXLAN configuration on **Leaf12**:
-
-Using **SONiC bash CLI**:
-
+Expected output
 ```bash
-bash << 'EOF'
-sudo config vrf add Vrf_Type5
-sudo config interface vrf bind Vlan240 Vrf_Type5
-sudo config interface ip add Vlan240 10.90.1.254/24
-sudo config vlan add 999
-sudo config interface vrf bind Vlan999 Vrf_Type5
-sudo config vxlan map add vtep 240 10240
-sudo config vxlan map add vtep 999 10999
-sudo config vrf add_vrf_vni_map Vrf_Type5 10999
-sudo config save -y
-EOF
+leaf11# show ip route vrf Vrf_Type5 bgp
+B>* 10.90.1.0/24 [20/0] via 2.2.2.2, Vlan999 onlink, weight 1, 00:33:36
+                        via 2.2.2.2, Vlan999 onlink (dup), weight 1, 00:33:36
+
+leaf12# show ip route vrf Vrf_Type5 bgp
+B>* 10.80.1.0/24 [20/0] via 1.1.1.1, Vlan999 onlink, weight 1, 00:28:52
+                        via 1.1.1.1, Vlan999 onlink (dup), weight 1, 00:28:52
 ```
 
 ### Ping between Client 2 & 4
