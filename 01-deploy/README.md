@@ -14,7 +14,7 @@ All 4 clients will be running [Alpine Linux](https://alpinelinux.org/)
 
 ## Install Containerlab
 
-To learn more about Containerlab, refer to [Nanog 93 Containerlab Workshop](https://github.com/srlinuxamericas/n93-clab)
+To learn more about Containerlab, refer to [Autocon 2 Containerlab Workshop](https://github.com/srlinuxamericas/ac2-clab)
 
 Install Containerlab on your VM.
 
