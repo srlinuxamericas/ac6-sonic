@@ -78,7 +78,7 @@ gnmic -a spine11:8080 -u admin -p admin --insecure \
   -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP/TEST_GNMI_SET|10' \
   --update-value '{"route_operation": "permit","match_protocol": "ospf","set_asn": "65501"}'
-``
+```
 
 Expected output:
 
