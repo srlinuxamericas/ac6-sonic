@@ -185,16 +185,10 @@ gnmic -a spine11:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
-Login to **Spine11** and save the config.
+Login to **Spine11** and save the config and reload.
 
 ```bash
-sudo config save -y
-```
-
-Save the config on **Spine11**:
-
-```bash
-sudo config reload -y
+sudo config save -y && sudo config reload -y
 ```
 
 BGP underlay configuration on **Spine12** using gNMI:
@@ -236,16 +230,10 @@ gnmic -a spine12:8080 --insecure \
   --update-value '{"admin_status": "up"}'
 ```
 
-Login to **Spine12** and save the config.
+Login to **Spine12** and save the config and reload.
 
 ```bash
-sudo config save -y
-```
-
-Save the config on **Spine12**:
-
-```bash
-sudo config reload -y
+sudo config save -y && sudo config reload -y
 ```
 
 ### BGP Underlay Verification
