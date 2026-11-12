@@ -67,6 +67,7 @@ With the sonic image built, we can proceed with the lab deployment. We will depl
 Use the below command to clone this repo to your VM.
 
 ```bash
+cd ~/
 sudo git clone https://github.com/srlinuxamericas/ac6-sonic.git
 ```
 
