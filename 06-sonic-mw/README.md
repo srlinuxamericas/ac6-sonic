@@ -95,7 +95,7 @@ Before simulating the maitenance window, start traffic between the clients.
 Login to **client11** and run:
 
 ```bash
-iperf3 -scd ..
+iperf3 -s
 ```
 
 Login to **client13** and run:
