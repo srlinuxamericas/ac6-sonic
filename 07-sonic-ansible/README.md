@@ -21,7 +21,7 @@ Automation Files:
 
 Running the playbook: 
 ```
-ansible-playbook -i hosts getinventory.yml
+sudo ansible-playbook -i hosts getinventory.yml
 ```
 Verify the result
 ```
