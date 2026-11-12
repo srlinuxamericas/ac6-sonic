@@ -82,7 +82,7 @@ gnmic -a spine11:8080 -u admin -p admin --insecure \
   --update-path 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP/TEST_GNMI_SET|20' \
   --update-value '{"route_operation":"permit","match_protocol":"isis","set_asn":"65501"}'
 
-``
+```
 
 Expected output:
 
