@@ -99,7 +99,7 @@ Note: you can run the inventory report before and after for full baseline:
 ```
 ansible-playbook -i hosts getinventory.yml
 ```
-**copy the report to a different name so it does not get overwritten** 
+**Save the baseline: copy the report under a different name so the next run doesn’t overwrite it.** 
 ```
 cp fabric-inventory.txt fabric-before.txt
 ```
