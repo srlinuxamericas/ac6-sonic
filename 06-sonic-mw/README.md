@@ -95,7 +95,7 @@ Before simulating the maitenance window, start traffic between the clients.
 Login to **client1** and run:
 
 ```bash
-iperf3 -scd
+iperf3 -s
 ```
 
 Login to **client3** and run:
@@ -111,27 +111,6 @@ Open the Grafana dashboard for your VM and check which spine is taking in all th
 We will simulate a traffic drain on that active spine switch.
 
 Based on which spine is currently taking traffic, run only one of the below 2 sections. Do not run both sections which will cause an outage scenario.
-
-## If Spine12 is active
-
-On the Grafana dashboard, if **Spine12** is active spine taking all the traffic, run the below commands to drain the traffic from `spine12` in order to simulate a maitenance window.
-
-These commands apply the previously created GSHUT route policies to both underlay and overlay neighbors of the spine.
-
-Run these `gnmic` commands from the VM:
-
-```bash
-gnmic -a spine12:8080 --insecure \
-  -e json_ietf set \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.12.2|ipv4_unicast' \
-  --update-value '{"admin_status":"up","route_map_out":["RM_SPINE_GSHUT_OUT"]}' \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.22.2|ipv4_unicast' \
-  --update-value '{"admin_status":"up","route_map_out":["RM_SPINE_GSHUT_OUT"]}' \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|l2vpn_evpn' \
-  --update-value '{"admin_status":"up","route_map_out":["RM_SPINE_GSHUT_OUT"]}' \
-  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|l2vpn_evpn' \
-  --update-value '{"admin_status":"up","route_map_out":["RM_SPINE_GSHUT_OUT"]}'
-```
 
 ## If Spine11 is active
 
@@ -154,6 +133,27 @@ gnmic -a spine11:8080 --insecure \
   --update-value '{"admin_status":"up","route_map_out":["RM_SPINE_GSHUT_OUT"]}'
 ```
 
+## If Spine12 is active
+
+On the Grafana dashboard, if **Spine12** is active spine taking all the traffic, run the below commands to drain the traffic from `spine12` in order to simulate a maitenance window.
+
+These commands apply the previously created GSHUT route policies to both underlay and overlay neighbors of the spine.
+
+Run these `gnmic` commands from the VM:
+
+```bash
+gnmic -a spine12:8080 --insecure \
+  -e json_ietf set \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.12.2|ipv4_unicast' \
+  --update-value '{"admin_status":"up","route_map_out":["RM_SPINE_GSHUT_OUT"]}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.22.2|ipv4_unicast' \
+  --update-value '{"admin_status":"up","route_map_out":["RM_SPINE_GSHUT_OUT"]}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|l2vpn_evpn' \
+  --update-value '{"admin_status":"up","route_map_out":["RM_SPINE_GSHUT_OUT"]}' \
+  --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|l2vpn_evpn' \
+  --update-value '{"admin_status":"up","route_map_out":["RM_SPINE_GSHUT_OUT"]}'
+```
+
 ## Monitor Grafana
 
 Check the Grafana dashboard to verify traffic drain from the active spine and traffic switchover to the other spine.
@@ -161,16 +161,6 @@ Check the Grafana dashboard to verify traffic drain from the active spine and tr
 ## Post Maintenance
 
 After maintenance is completed, the policies can be removed from the BGP neighbors of the spine so that traffic will be back on the spine.
-
-If **Spine12** was taken out for maintanance, run the below commands from the VM to remove the route policy from the BGP neighbors:
-
-```bash
-gnmic -a spine12:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.12.2|ipv4_unicast/route_map_out'   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.22.2|ipv4_unicast/route_map_out'
-```
-
-```bash
-gnmic -a spine12:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|l2vpn_evpn/route_map_out'   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|l2vpn_evpn/route_map_out'
-```
 
 If **Spine11** was taken out for maintanance, run the below commands from the VM to remove the route policy from the BGP neighbors:
 
@@ -180,6 +170,16 @@ gnmic -a spine11:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG
 
 ```bash
 gnmic -a spine11:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|l2vpn_evpn/route_map_out'   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|l2vpn_evpn/route_map_out'
+```
+
+If **Spine12** was taken out for maintanance, run the below commands from the VM to remove the route policy from the BGP neighbors:
+
+```bash
+gnmic -a spine12:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.12.2|ipv4_unicast/route_map_out'   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.22.2|ipv4_unicast/route_map_out'
+```
+
+```bash
+gnmic -a spine12:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|1.1.1.1|l2vpn_evpn/route_map_out'   --delete 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|2.2.2.2|l2vpn_evpn/route_map_out'
 ```
 
 This completes the maintenance window section.

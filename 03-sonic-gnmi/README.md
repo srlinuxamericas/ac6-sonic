@@ -74,12 +74,14 @@ Expected output:
 Let's create a Route policy using gNMI Set.
 
 ```bash
+
 gnmic -a spine11:8080 -u admin -p admin --insecure \
   -e json_ietf set \
   --update-path 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP/TEST_GNMI_SET|10' \
-  --update-value '{"route_operation": "permit","match_protocol": "ospf","set_asn": "65501"}'
+  --update-value '{"route_operation":"permit","match_protocol":"ospf","set_asn":"65501"}' \
   --update-path 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP/TEST_GNMI_SET|20' \
-  --update-value '{"route_operation": "permit","match_protocol": "isis","set_asn": "65501"}'
+  --update-value '{"route_operation":"permit","match_protocol":"isis","set_asn":"65501"}'
+
 ```
 
 Expected output:
@@ -92,9 +94,14 @@ Expected output:
     {
       "operation": "UPDATE",
       "path": "sonic-db:/CONFIG_DB/localhost/ROUTE_MAP/TEST_GNMI_SET|10"
+    },
+    {
+      "operation": "UPDATE",
+      "path": "sonic-db:/CONFIG_DB/localhost/ROUTE_MAP/TEST_GNMI_SET|20"
     }
   ]
 }
+
 ```
 
 Now let's query that route policy using gNMI GET:
@@ -109,8 +116,8 @@ Expected output:
 [
   {
     "source": "spine11:8080",
-    "timestamp": 1794002538859732945,
-    "time": "2026-11-06T16:02:18.859732945-06:00",
+    "timestamp": 1794415291243669903,
+    "time": "2026-11-11T10:41:31.243669903-06:00",
     "updates": [
       {
         "Path": "sonic-db:/CONFIG_DB/localhost/ROUTE_MAP|TEST_GNMI_SET",
@@ -120,6 +127,11 @@ Expected output:
               "match_protocol": "ospf",
               "route_operation": "permit",
               "set_asn": "65501"
+            },
+            "TEST_GNMI_SET|20": {
+              "match_protocol": "isis",
+              "route_operation": "permit",
+              "set_asn": "65501"
             }
           }
         }
@@ -127,11 +139,12 @@ Expected output:
     ]
   }
 ]
+
 ```
 
 That confirms our route policy was successfully provisioned.
 
-Now let's delete this route policy:
+Now let's delete this route policy statement 10:
 
 ```bash
 gnmic -a spine11:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP/TEST_GNMI_SET|10'
@@ -152,7 +165,7 @@ Expected output:
 }
 ```
 
-Now try the gNMI GET again to see if the policy exists.
+Now try the gNMI GET again to see if the policy and remaining statement exists.
 
 ```bash
 gnmic -a spine11:8080 --insecure   -e json_ietf get   --path 'sonic-db:/CONFIG_DB/localhost/ROUTE_MAP|TEST_GNMI_SET'
@@ -161,11 +174,31 @@ gnmic -a spine11:8080 --insecure   -e json_ietf get   --path 'sonic-db:/CONFIG_D
 Expected output:
 
 ```bash
-target "spine11:8080" Get request failed: "spine11:8080" GetRequest failed: rpc error: code = NotFound desc = Failed to find CONFIG_DB ROUTE_MAP|TEST_GNMI_SET <nil> []
-Error: one or more requests failed
+[
+  {
+    "source": "spine11:8080",
+    "timestamp": 1794415463776377647,
+    "time": "2026-11-11T10:44:23.776377647-06:00",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/ROUTE_MAP",
+        "values": {
+          "CONFIG_DB/localhost/ROUTE_MAP": {
+            "TEST_GNMI_SET|20": {
+              "match_protocol": "isis",
+              "route_operation": "permit",
+              "set_asn": "65501"
+            }
+          }
+        }
+      }
+    ]
+  }
+]
+
 ```
 
-The policy does not exist anymore since it was successfully deleted.
+The policy statement 10 does not exist anymore since it was successfully deleted.
 
 ## gNMI Subscribe
 
