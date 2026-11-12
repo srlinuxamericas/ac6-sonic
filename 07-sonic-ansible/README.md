@@ -30,6 +30,8 @@ cat fabric-inventory.txt
 
 ### 1 - Multi-Tenants via VLAN 
 
+Adding VLANs to a fabric 
+
 
 
  
