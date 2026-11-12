@@ -117,7 +117,7 @@ Verify (run the previous verify commands)
    - vtysh -c "show evpn vni" — a new 10130 L2 row on vtep-130, tenant VRF default
 </pre>  
 
-Test the ping client 4 from **client2** 
+Test the ping:  ping client 4 from **client2** 
 ```
 ping -c 3 172.16.30.4
 ```
