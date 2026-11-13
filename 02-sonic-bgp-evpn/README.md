@@ -630,6 +630,7 @@ VRF configuration on **Leaf11**:
 Using **FRR CLI**:
 
 ```bash
+configure
 vrf Vrf_Type5
  ip router-id 1.1.1.1
  vni 10999
@@ -657,6 +658,7 @@ VRF configuration on **Leaf12**:
 Using **FRR CLI**:
 
 ```bash
+configure
 vrf Vrf_Type5
  ip router-id 2.2.2.2
  vni 10999
