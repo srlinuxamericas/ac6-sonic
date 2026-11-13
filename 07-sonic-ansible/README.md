@@ -27,6 +27,8 @@ Verify the result
 ```
 cat fabric-inventory.txt
 ```
+You can compare it with [this output](fabric-inventory.txt)
+
 
 ### 1 - Multi-Tenants: Provisioning a tenant segment
 
