@@ -35,6 +35,10 @@ A new tenant/customer needs a network segment, instead of logging to each leaf s
 2- map the VLAN to the VNI on both leaves. 
 3- Add the tenant's port to the VLAN
 
+
+<img src="MTautomation.png" alt="Descriptive text" width="600">
+
+
 Automation Files:  
 - hosts           --> inventory
 - settenant.yml   --> playbook
