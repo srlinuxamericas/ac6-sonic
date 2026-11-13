@@ -250,7 +250,7 @@ gnmic -a spine12:8080 --insecure \
   --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF'
 ```
 
-Login to **Spine11**. Save the config and Reload.
+Login to **Spine12**. Save the config and Reload.
 
 ```bash
 sudo config save -y && sudo config reload -y
