@@ -66,7 +66,7 @@ ping 192.168.10.2
 On your VM, run:
 
 ```bash
-ontainerlab capture --name ac6-sonic   --target leaf11:eth1 --duration 10s -w sonic.pcap
+containerlab capture --name ac6-sonic   --target leaf11:eth1 --duration 10s -w sonic.pcap
 ```
 
 This command takes a packet capture for 10 seconds and writes it to a file called `sonic.pcap` on the VM.
