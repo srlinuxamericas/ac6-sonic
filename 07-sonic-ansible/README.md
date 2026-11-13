@@ -33,9 +33,11 @@ You can compare it with [this output](fabric-inventory.txt)
 ### 1 - Multi-Tenants: Provisioning a tenant segment
 
 A new tenant/customer needs a network segment, instead of logging to each leaf switch, you just need to provide the VLAN once and the playbook pushes it to all the switches via gNMI: 
-1- Create VLAN (130) on leaf11 and leaf12
-2- map the VLAN to the VNI on both leaves. 
-3- Add the tenant's port to the VLAN
+
+1. Create VLAN (130) on leaf11 and leaf12
+2. Map the VLAN to the VNI on both leaves.
+3. Add the tenant's port to the VLAN
+
 
 
 <img src="MTautomation.png" alt="Descriptive text" width="600">
