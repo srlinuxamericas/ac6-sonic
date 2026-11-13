@@ -19,6 +19,7 @@ This configuration will be pushed via FRR CLI.
 On **leaf11** and **leaf12** (copy and paste to both switches):
 
 ```bash
+configure
 bgp community-list standard CL_GSHUT seq 5 permit graceful-shutdown
 route-map RM_EVPN_GSHUT_IN permit 10
 match community CL_GSHUT
