@@ -1,0 +1,7 @@
+[leaves]
+leaf11 port=Ethernet40
+leaf12 port=Ethernet40
+
+[spines]
+spine11
+spine12

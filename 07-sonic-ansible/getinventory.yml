@@ -1,0 +1,174 @@
+
+# SONiC fabric inventory over gNMI and ssh, as tables, saved to a file.
+#
+#   ansible-playbook -i hosts getinventory.yml
+#   saves to  fabric-inventory.txt
+
+- name: Collect fabric inventory
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  vars:
+    gnmic: >-
+      gnmic -a {{ inventory_hostname }}:8080 -u admin -p admin
+      --insecure --format json
+
+  tasks:
+
+    # ---- collect ---------------------------------------------------
+
+    - name: Get interfaces
+      ansible.builtin.command: '{{ gnmic }} get --path "INTERFACE" --target CONFIG_DB'
+      register: r_intf
+      changed_when: false
+
+    - name: Get loopbacks
+      ansible.builtin.command: '{{ gnmic }} get --path "LOOPBACK_INTERFACE" --target CONFIG_DB'
+      register: r_lo
+      changed_when: false
+
+    # eth0 is set by the OS, not CONFIG_DB, so gNMI cannot see it: use SSH.
+    - name: Get management interface from the OS
+      ansible.builtin.command: >-
+        sshpass -p admin ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR
+        admin@{{ inventory_hostname }} 'ip -4 -br addr show eth0'
+      register: r_mgmt
+      changed_when: false
+      failed_when: false
+
+    - name: Get port status
+      ansible.builtin.command: '{{ gnmic }} get --path "PORT_TABLE" --target APPL_DB'
+      register: r_port
+      changed_when: false
+
+    # BGP comes from FRR, not gNMI: STATE_DB only lists the stale sample peers.
+    - name: Get BGP sessions from FRR
+      ansible.builtin.command: >-
+        sshpass -p admin ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR
+        admin@{{ inventory_hostname }} 'vtysh -c "show bgp summary json"'
+      register: r_bgp
+      changed_when: false
+
+    - name: Get VLANs
+      ansible.builtin.command: '{{ gnmic }} get --path "VLAN" --target CONFIG_DB'
+      register: r_vlan
+      changed_when: false
+
+    # VLAN to VNI mapping only exists on the leaves.
+    - name: Get VNI mappings
+      ansible.builtin.command: '{{ gnmic }} get --path "VXLAN_TUNNEL_MAP" --target CONFIG_DB'
+      register: r_vni
+      changed_when: false
+      when: inventory_hostname in groups['leaves']
+
+    # ---- parsing (trying to parse to look good) -----------------------------------------------
+
+    - name: Parse
+      ansible.builtin.set_fact:
+        f_intf: "{{ (r_intf.stdout  | from_json)[0].updates[0]['values']['INTERFACE']          | default({}, true) }}"
+        f_lo:   "{{ (r_lo.stdout    | from_json)[0].updates[0]['values']['LOOPBACK_INTERFACE'] | default({}, true) }}"
+        f_mgmt: "{{ (r_mgmt.stdout.split()[2]) if (r_mgmt.rc == 0 and r_mgmt.stdout.split() | length > 2) else '' }}"
+        f_port: "{{ (r_port.stdout  | from_json)[0].updates[0]['values']['PORT_TABLE']         | default({}, true) }}"
+        f_bgp:  "{{ (r_bgp.stdout   | from_json) }}"
+        f_vlan: "{{ (r_vlan.stdout  | from_json)[0].updates[0]['values']['VLAN']               | default({}, true) }}"
+
+    - name: Parse VNI mappings
+      ansible.builtin.set_fact:
+        f_vni: "{{ (r_vni.stdout | from_json)[0].updates[0]['values']['VXLAN_TUNNEL_MAP'] | default({}, true) }}"
+      when: inventory_hostname in groups['leaves']
+
+    # ---- tyring to render (test 22) -------------------------------------------------
+
+    - name: Build the report
+      ansible.builtin.copy:
+        dest: fabric-inventory.txt
+        mode: "0644"
+        content: |
+          SONiC fabric inventory
+          {% for node in groups['all'] | sort %}
+          {% set h = hostvars[node] %}
+
+          ==========================================================================
+           {{ node }}
+          ==========================================================================
+
+          INTERFACES
+          {{ '%-12s %-20s %-6s %-6s %-16s' | format('Port', 'Address', 'Admin', 'Oper', 'BGP Neighbor') }}
+          {{ '-' * 64 }}
+          {% for key in h.f_intf | default({}) | sort %}
+          {% if '|' in key %}
+          {% set port = key.split('|')[0] %}
+          {% set addr = key.split('|')[1] %}
+          {% set st = (h.f_port | default({})).get(port, {}) %}
+          {% set ip = addr.split('/')[0].split('.') %}
+          {% set ns = namespace(nb='-') %}
+          {% for p in h.f_bgp.get('ipv4Unicast', {}).get('peers', {}) %}
+          {% set q = p.split('.') %}
+          {% if q[:3] == ip[:3] and ((q[3] | int) // 2) == ((ip[3] | int) // 2) and q[3] != ip[3] %}{% set ns.nb = p %}{% endif %}
+          {% endfor %}
+          {{ '%-12s %-20s %-6s %-6s %-16s' | format(port, addr, st.admin_status | default('-'), st.oper_status | default('-'), ns.nb) }}
+          {% endif %}
+          {% endfor %}
+          {% for key in h.f_lo | default({}) | sort %}
+          {% if '|' in key %}
+          {{ '%-12s %-20s %-6s %-6s %-16s' | format(key.split('|')[0], key.split('|')[1], 'up', 'up', '-') }}
+          {% endif %}
+          {% endfor %}
+          {% if h.f_mgmt | default('') %}
+          {{ '%-12s %-20s %-6s %-6s %-16s' | format('eth0', h.f_mgmt, 'up', 'up', '-') }}
+          {% endif %}
+
+          BGP SESSIONS
+          {{ '%-18s %-10s %-8s %-13s %-8s %-8s' | format('Neighbour', 'Family', 'AS', 'State', 'PfxRcd', 'PfxSnt') }}
+          {{ '-' * 70 }}
+          {% for fam, label in [['ipv4Unicast', 'ipv4'], ['l2VpnEvpn', 'evpn']] %}
+          {% set peers = (h.f_bgp.get(fam, {})).get('peers', {}) %}
+          {% for p in peers | sort %}
+          {{ '%-18s %-10s %-8s %-13s %-8s %-8s' | format(p, label, peers[p].remoteAs | default('-'), peers[p].state | default('-'), peers[p].pfxRcd | default('-'), peers[p].pfxSnt | default('-')) }}
+          {% endfor %}
+          {% endfor %}
+
+          VLANS
+          {{ '%-12s %-8s %-8s' | format('Vlan', 'ID', 'VNI') }}
+          {{ '-' * 30 }}
+          {% for v in h.f_vlan | default({}) | sort %}
+          {% set ns = namespace(vni='-') %}
+          {% for m in h.f_vni | default({}) %}
+          {% if h.f_vni[m].vlan == v %}{% set ns.vni = h.f_vni[m].vni %}{% endif %}
+          {% endfor %}
+          {{ '%-12s %-8s %-8s' | format(v, h.f_vlan[v].vlanid | default('-'), ns.vni) }}
+          {% endfor %}
+          {% if (h.f_vlan | default({})) | length == 0 %}
+          (none)
+          {% endif %}
+          {% endfor %}
+
+          ==========================================================================
+           SUMMARY
+          ==========================================================================
+          {{ '%-12s %-8s %-10s %-8s' | format('Node', 'Ports', 'BGP peers', 'Up') }}
+          {{ '-' * 42 }}
+          {% for node in groups['all'] | sort %}
+          {% set h = hostvars[node] %}
+          {{ '%-12s %-8s %-10s %-8s' | format(
+               node,
+               (h.f_intf | default({}) | select('search', '\|') | list | length),
+               ((h.f_bgp.get('ipv4Unicast', {}).get('peers', {}) | length) + (h.f_bgp.get('l2VpnEvpn', {}).get('peers', {}) | length)),
+               ((h.f_bgp.get('ipv4Unicast', {}).get('peers', {}).values() | selectattr('state', 'eq', 'Established') | list | length)
+                + (h.f_bgp.get('l2VpnEvpn', {}).get('peers', {}).values() | selectattr('state', 'eq', 'Established') | list | length))
+             ) }}
+          {% endfor %}
+      run_once: true
+      delegate_to: localhost
+
+    - name: Show the report
+      ansible.builtin.command: cat fabric-inventory.txt
+      register: out
+      changed_when: false
+      run_once: true
+
+    - ansible.builtin.debug:
+        msg: "{{ out.stdout_lines }}"
+      run_once: true
+
