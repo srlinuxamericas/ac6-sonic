@@ -39,6 +39,9 @@ topology:
       exec:
         - ip address add 10.80.1.1/24 dev eth1
         - ip route add 10.90.1.0/24 via 10.80.1.254
+        - ip link add link eth1 name eth1.130 type vlan id 130
+        - ip address add 172.16.30.2/24 dev eth1.130
+        - ip link set eth1.130 up
 
     client3:
       kind: linux
@@ -52,6 +55,9 @@ topology:
       exec:
         - ip address add 10.90.1.1/24 dev eth1
         - ip route add 10.80.1.0/24 via 10.90.1.254
+        - ip link add link eth1 name eth1.130 type vlan id 130
+        - ip address add 172.16.30.4/24 dev eth1.130
+        - ip link set eth1.130 up
 
     ## Telemetry Stack
 
