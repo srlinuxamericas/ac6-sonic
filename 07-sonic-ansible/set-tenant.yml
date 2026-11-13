@@ -1,0 +1,45 @@
+---
+# Add a tenant segment on the leaves with gNMI Sets:
+#   1. create the VLAN
+#   2. map it to a VNI (so EVPN carries it)
+#   3. add it to customer port 
+
+
+- name: Add a tenant
+  hosts: leaves
+  connection: local
+  gather_facts: false
+
+  vars:
+    vlan_id: 130
+    vni: "{{ 10000 + vlan_id | int }}"
+    tagging: untagged            
+                                 
+    gnmic: >-
+      gnmic -a {{ inventory_hostname }}:8080 -u admin -p admin --insecure
+      --timeout 60s -e json_ietf
+
+  tasks:
+
+    - name: 1. Create VLAN {{ vlan_id }}
+      ansible.builtin.command: >-
+        {{ gnmic }} set
+        --update-path 'sonic-db:/CONFIG_DB/localhost/VLAN/Vlan{{ vlan_id }}'
+        --update-value '{"vlanid": "{{ vlan_id }}"}'
+      changed_when: true
+
+    - name: 2. Map VLAN {{ vlan_id }} to VNI {{ vni }}
+      ansible.builtin.command: >-
+        {{ gnmic }} set
+        --update-path 'sonic-db:/CONFIG_DB/localhost/VXLAN_TUNNEL_MAP/vtep|map_{{ vni }}_Vlan{{ vlan_id }}'
+        --update-value '{"vlan": "Vlan{{ vlan_id }}", "vni": "{{ vni }}"}'
+      changed_when: true
+
+    # port comes from the hosts file
+    - name: 3. Add the access port to VLAN {{ vlan_id }} ({{ tagging }})
+      ansible.builtin.command: >-
+        {{ gnmic }} set
+        --update-path 'sonic-db:/CONFIG_DB/localhost/VLAN_MEMBER/Vlan{{ vlan_id }}|{{ port }}'
+        --update-value '{"tagging_mode": "{{ tagging }}"}'
+      changed_when: true
+      when: port is defined and port | length > 0
