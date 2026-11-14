@@ -40,7 +40,7 @@ A new tenant/customer needs a network segment, instead of logging to each leaf s
 
 
 
-<img src="MTautomation.svg" alt="Descriptive text" width="600">
+<img src="topology.svg" alt="Descriptive text" width="600">
 
 
 Automation Files:  
