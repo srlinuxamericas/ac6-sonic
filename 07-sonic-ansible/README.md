@@ -39,8 +39,7 @@ A new tenant/customer needs a network segment, instead of logging to each leaf s
 3. Add the tenant's port to the VLAN
 
 
-
-<img src="MTautomation.png" alt="Descriptive text" width="600">
+<img src="topology.svg" alt="Descriptive text" width="650">
 
 
 Automation Files:  
