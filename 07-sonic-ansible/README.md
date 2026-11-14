@@ -115,7 +115,7 @@ cp fabric-inventory.txt fabric-before.txt
 Add the tenant to with vlan_id 130
 
 ```
-ansible-playbook -i hosts set-tenant.yml -e vlan_id=130
+ansible-playbook -i hosts set-tenant.yml -e vlan_id=130 -e tagging=tagged
 ```
 
 Verify (run the previous verify commands) 
