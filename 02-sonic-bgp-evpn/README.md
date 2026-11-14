@@ -497,7 +497,6 @@ Enable BGP to advertise VNI:
 On **Leaf11**, run the following command **Using FRR CLI**:
 
 ```bash
-configure
 router bgp 64501
  address-family l2vpn evpn
   advertise-all-vni
@@ -506,7 +505,6 @@ router bgp 64501
 On **Leaf12**, run the following command **Using FRR CLI**:
 
 ```bash
-configure
 router bgp 64502
  address-family l2vpn evpn
   advertise-all-vni
@@ -630,7 +628,6 @@ VRF configuration on **Leaf11**:
 Using **FRR CLI**:
 
 ```bash
-configure
 vrf Vrf_Type5
  ip router-id 1.1.1.1
  vni 10999
@@ -658,7 +655,6 @@ VRF configuration on **Leaf12**:
 Using **FRR CLI**:
 
 ```bash
-configure
 vrf Vrf_Type5
  ip router-id 2.2.2.2
  vni 10999
