@@ -3,7 +3,8 @@
 
 
 
-!(gnmidiagram)[gnmisubscribe)
+
+<img src="gnmisubscribe.png" alt="Descriptive text" width="650">
 
 
 
