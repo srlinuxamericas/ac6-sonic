@@ -2,6 +2,11 @@
 
 
 
+
+!(gnmidiagram)[gnmisubscribe)
+
+
+
 ## gNMI Subscribe
 
 The Subscribe RPC is the most commonly used gNMI RPC and provides Streaming Telemetry.
