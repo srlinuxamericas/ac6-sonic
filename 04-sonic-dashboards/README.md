@@ -4,13 +4,17 @@
 
 
 
-<img src="gnmisubscribe.png" alt="Descriptive text" width="650">
 
 
 
 ## gNMI Subscribe
 
 The Subscribe RPC is the most commonly used gNMI RPC and provides Streaming Telemetry.
+
+
+<img src="gnmisubscribe.png" alt="Descriptive text" width="650">
+
+
 
 We will try 2 different telemetry options during this workshop.
 
