@@ -24,6 +24,8 @@ Using the browser : `<id>`.workxshop.net:3000
   Password: admin
     (skip changing the password step) 
 
+<img src="grafana.png" alt="Descriptive text" width="700">
+
 
 
 We will try 2 different telemetry options during this workshop.
