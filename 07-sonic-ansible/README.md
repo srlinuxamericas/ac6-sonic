@@ -108,7 +108,7 @@ ansible-playbook -i hosts getinventory.yml
 ```
 **Save the baseline: copy the report under a different name so the next run doesn’t overwrite it.** 
 ```
-cp fabric-inventory.txt fabric-before.txt
+sudo cp fabric-inventory.txt fabric-before.txt
 ```
 
 Add the tenant to with vlan_id 130
