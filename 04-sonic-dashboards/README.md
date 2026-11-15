@@ -18,10 +18,11 @@ The Subscribe RPC is the most commonly used gNMI RPC and provides Streaming Tele
 
 **Accessing Grafana:**
 
-Using the browser : <id>.workxshop.net:3000
-  .User:admin
-  .Password: admin
-(skip changing the password step) 
+Using the browser : `<id>`.workxshop.net:3000
+
+   User:admin
+  Password: admin
+    (skip changing the password step) 
 
 
 
