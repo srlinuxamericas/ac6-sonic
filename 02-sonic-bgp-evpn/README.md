@@ -483,13 +483,13 @@ The output below confirms that IPv4 BGP neighbor sessions are established betwee
 ```bash
 IPv4 Unicast Summary:
 BGP router identifier 11.11.11.11, local AS number 64500 VRF default vrf-id 0
-BGP table version 8
-RIB entries 17, using 2176 bytes of memory
+BGP table version 5
+RIB entries 5, using 640 bytes of memory
 Peers 2, using 47 KiB of memory
 
 Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
-192.168.10.2    4      64501        13        11        8    0    0 00:00:12            4        8 N/A
-192.168.20.2    4      64502        13        11        8    0    0 00:00:12            4        8 N/A
+192.168.10.2    4      64501         8         8        5    0    0 00:02:02            1        3 N/A
+192.168.20.2    4      64502         8         8        5    0    0 00:02:02            1        3 N/A
 
 Total number of neighbors 2
 ```
