@@ -10,20 +10,26 @@ docker pull ghcr.io/sajusal/sonic-saju:202605
 
 Verify using `docker images` command.
 
-Open the sonic-evpn.clab.yml and replace the sonic image path with the image page you see in the above output.
+Open the ac6-sonic.clab.yml and replace the sonic image path with the image page you see in the above output.
 
 ```diff
-- image: vrnetlab/sonic_sonic-vs:2511
+- image: vrnetlab/sonic_sonic-vs:2605
 + image: ghcr.io/sajusal/sonic-saju:202605
 ```
 
-Install the sshpass package.
+Install the sshpass package in the Codespace VM:
 
 ```bash
 sudo apt-get update && sudo apt-get install -y sshpass
 ```
 
-Deploy the lab:
+Install gnmic in the Codespace VM:
+
+```bash
+bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
+```
+
+Deploy the lab from the main directory:
 
 ```bash
 clab dep
