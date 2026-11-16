@@ -24,7 +24,6 @@ Automation Files:
 |---|---|
 |hosts|inventory file|
 |getinventory.yml|Playbook|
-|ansible.cfg |Configuration|
 |fabric-inventory.txt| Output Report|
 
 Running the playbook:
@@ -52,7 +51,13 @@ You can compare it with [this output](fabric-inventory.txt)
 
 ### 2 - Multi-Tenants: Provisioning a tenant segment
 
-A new tenant/customer needs a network segment, instead of logging to each leaf switch, you just need to provide the VLAN once and the playbook pushes it to all the switches via gNMI: 
+In this use case, we simulate on-boarding a new tenant.
+
+Typically, a new tenant is assigned a new VLAN and associated configurations.
+
+Rather than using CLI to login to each leaf and configure the new tenant, we will use Ansible playbook and push the configuration using gNMI.
+
+The playbook will configure the following:
 
 1. Create VLAN (130) on leaf11 and leaf12
 2. Map the VLAN to the VNI on both leaves.
@@ -62,18 +67,24 @@ A new tenant/customer needs a network segment, instead of logging to each leaf s
 <img src="topology.svg" alt="Descriptive text" width="650">
 
 
-Automation Files:  
-- hosts           --> inventory
-- settenant.yml   --> playbook
-- ansible.cfg     --> configuration
+Automation Files:
 
-Prior to adding the tenant, let's verify the following on on **Leaf11**  and on **Leaf12** 
+|File|Description|
+|---|---|
+|hosts|Inventory file|
+|settenant.yml|Playbook|
+|ansible.cfg |Configuration|
 
-verify the VLAN members 
-```
+Prior to adding the tenant, let's verify the following on **Leaf11**  and on **Leaf12** using **SONiC CLI** 
+
+Verify the VLAN members 
+
+```bash
 show vlan brief
 ```
-Expected: VLANs 110, 200 and 999 — no VLAN 130.
+
+Expected: VLANs 110, 200 and 999 — no VLAN 130 on **Leaf11**
+Expected: VLANs 110, 240 and 999 — no VLAN 130 on **Leaf12**
 
 <pre>
 +-----------+----------------+------------+----------------+-------------+-----------------------+
@@ -87,12 +98,14 @@ Expected: VLANs 110, 200 and 999 — no VLAN 130.
 +-----------+----------------+------------+----------------+-------------+-----------------------+
 </pre>
 
-Verify VNI mapping
+Verify VNI mapping:
 
-```
+```bash
 show vxlan vlanvnimap
 ```
+
 Expected: No  Vlan130 mapping 
+
 <pre>
 +---------+-------+
 | VLAN    |   VNI |
