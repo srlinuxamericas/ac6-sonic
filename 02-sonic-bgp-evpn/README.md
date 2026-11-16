@@ -837,7 +837,7 @@ EOF
 
 VRF configuration on **Leaf11**:
 
-Using **FRR CLI**:
+Using **FRR CLI** (Enter `vtysh` and then `config`):
 
 ```bash
 vrf Vrf_Type5
@@ -864,7 +864,7 @@ exit
 
 VRF configuration on **Leaf12**:
 
-Using **FRR CLI**:
+Using **FRR CLI** (Enter `vtysh` and then `config`):
 
 ```bash
 vrf Vrf_Type5
