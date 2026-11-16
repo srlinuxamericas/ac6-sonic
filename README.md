@@ -13,12 +13,12 @@ Shortcut links to major sections in this README. Follow the instructions in the 
 |Workshop Topics|
 |---|
 | [01-Build image and deploy lab](./01-deploy) |
-| [02-Configure BGP and EVPN](./02-sonic-cli) |
+| [02-SONiC BGP and EVPN](./02-sonic-bgp-evpn) |
 | [03-gNMI with SONiC](./03-sonic-gnmi) |
-| [04-SONiC Dashboards](./04-sonic-dashboards) |
-| [05-SONiC packet capture](./05-sonic-pcap) |
+| [04-SONiC Telemetry](./04-sonic-telemetry) |
+| [05-SONiC Automation](./05-sonic-automation) |
 | [06-SONiC Maintenance](./06-sonic-mw) |
-| [07-Ansible with SONiC](./08-sonic-ansible) |
+| [07-SONiC packet capture](./07-sonic-pcap) |
 
 ## Lab Environment
 

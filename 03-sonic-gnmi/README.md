@@ -202,4 +202,4 @@ The policy statement 10 does not exist anymore since it was successfully deleted
 
 
 
-## Next Section:   [SONiC Dashboards](https://github.com/srlinuxamericas/ac6-sonic/tree/main/04-sonic-dashboards)
+## Next Section:   [SONiC Telemetry](https://github.com/srlinuxamericas/ac6-sonic/tree/main/04-sonic-telemetry)

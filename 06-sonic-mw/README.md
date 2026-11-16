@@ -185,4 +185,4 @@ gnmic -a spine12:8080 --insecure   -e json_ietf set   --delete 'sonic-db:/CONFIG
 
 This completes the maintenance window section.
 
-## Next Section:   [Ansible with SONiC](https://github.com/srlinuxamericas/ac6-sonic/tree/main/08-sonic-ansible)
+## Next Section:   [SONiC PCAP](https://github.com/srlinuxamericas/ac6-sonic/tree/main/07-sonic-pcap)
