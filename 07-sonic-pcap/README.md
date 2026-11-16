@@ -90,7 +90,7 @@ Keep the above ping running.
 Run the below command on **leaf11**:
 
 ```bash
-tcpdump -v -i Ethernet0
+sudo tcpdump -v -i Ethernet0
 ```
 
 Expected output:
