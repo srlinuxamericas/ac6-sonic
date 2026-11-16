@@ -27,7 +27,13 @@ Automation Files:
 |ansible.cfg |Configuration|
 |fabric-inventory.txt| Output Report|
 
-Running the playbook: 
+Running the playbook:
+
+Change to the directory:
+
+```bash
+cd ~/ac6-sonic/05-sonic-automation/
+```
 
 ```bash
 sudo ansible-playbook -i hosts getinventory.yml
