@@ -27,7 +27,7 @@ Using the browser : http://`<id>`.workxshop.net:3000
 
 <img src="grafana.png" alt="Descriptive text" width="700">
 
-
+On the left menu, select `Dashboards`. On the new page, select `SONiC EVPN Failover Demo`.
 
 We will try 2 different telemetry options during this workshop.
 
