@@ -56,8 +56,8 @@ docker images
 ```
 
 ```bash
-REPOSITORY                TAG       IMAGE ID       CREATED          SIZE
-vrnetlab/sonic_sonic-vs   202605    33b73b1dadc4   5 minutes ago    6.37GB
+REPOSITORY                TAG       IMAGE ID       CREATED              SIZE
+vrnetlab/sonic_sonic-vs   202605    49e18a4cad6f   About a minute ago   8.73GB
 ```
 
 ## Deploying the SONiC lab
