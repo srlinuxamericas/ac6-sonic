@@ -16,7 +16,7 @@ Our first step is to configure the route policy on the leafs to set `local-prefe
 
 This configuration will be pushed via FRR CLI.
 
-On **leaf11** and **leaf12** (copy and paste to both switches):
+On **leaf11** and **leaf12** (copy and paste to both switches after typing `vtysh`):
 
 ```bash
 configure
