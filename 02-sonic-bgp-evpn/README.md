@@ -888,19 +888,26 @@ router bgp 64502 vrf Vrf_Type5
  exit-address-family
 exit
 ```
+
 ### Verify routes are present under vrf Vrf_Type5
-Log into **Leaf11** and **Leaf12**
+
+On **Leaf11** and **Leaf12**
 
 ```bash
-show ip route vrf Vrf_Type5 bgp
+do show ip route vrf Vrf_Type5 bgp
 ```
 
-Expected output
+Expected output on leaf11:
+
 ```bash
 leaf11# show ip route vrf Vrf_Type5 bgp
 B>* 10.90.1.0/24 [20/0] via 2.2.2.2, Vlan999 onlink, weight 1, 00:33:36
                         via 2.2.2.2, Vlan999 onlink (dup), weight 1, 00:33:36
+```
 
+Expected output on leaf12:
+
+```bash
 leaf12# show ip route vrf Vrf_Type5 bgp
 B>* 10.80.1.0/24 [20/0] via 1.1.1.1, Vlan999 onlink, weight 1, 00:28:52
                         via 1.1.1.1, Vlan999 onlink (dup), weight 1, 00:28:52
