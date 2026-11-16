@@ -93,13 +93,25 @@ gnmic -a spine12:8080 -u admin -p admin --insecure \
 
 Before simulating the maitenance window, start traffic between the clients.
 
-Login to **client1** and run:
+Login to **client1**:
+
+```bash
+ssh root@client1
+```
+
+and run:
 
 ```bash
 iperf3 -s
 ```
 
-Login to **client3** and run:
+Login to **client3**:
+
+```bash
+ssh root@client3
+```
+
+and run:
 
 ```bash
 iperf3 -c 172.16.10.50 -u -P 5 -l 1200 -b 4M -t 900
