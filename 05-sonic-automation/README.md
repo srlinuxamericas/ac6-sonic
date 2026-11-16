@@ -119,13 +119,14 @@ Expected: No  Vlan130 mapping
 Total count : 3
 </pre>  
 
-Verify EVPN VNIs known to FRR
+Verify EVPN VNIs known to FRR:
 
-```
+```bash
 vtysh -c "show evpn vni"
 ```
 
-expected: 
+Expected Output: 
+
 <pre>
 VNI        Type VxLAN IF              # MACs   # ARPs   # Remote VTEPs  Tenant VRF                                                   
 10110      L2   vtep-110              0        1        1               default                              
@@ -136,32 +137,40 @@ VNI        Type VxLAN IF              # MACs   # ARPs   # Remote VTEPs  Tenant V
 
 Note: you can run the inventory report before and after for full baseline:
 
-```
+```bash
 ansible-playbook -i hosts getinventory.yml
 ```
-**Save the baseline: copy the report under a different name so the next run doesn’t overwrite it.** 
+
+>**Save the baseline: copy the report under a different name so the next run doesn’t overwrite it.** 
+
 ```
 sudo cp fabric-inventory.txt fabric-before.txt
 ```
 
-Add the tenant to with vlan_id 130
+Add the tenant to vlan_id 130:
 
 ```
 ansible-playbook -i hosts set-tenant.yml -e vlan_id=130 -e tagging=tagged
 ```
 
-Verify (run the previous verify commands) 
+Verify (run the previous verify commands):
+
 <pre>
    - show vlan brief — VLAN 130 appears, Ethernet40 tagged
    - show vxlan vlanvnimap — Vlan130 → 10130, total count 4
    - vtysh -c "show evpn vni" — a new 10130 L2 row on vtep-130, tenant VRF default
 </pre>  
 
-Test the ping:  ping client 4 from **client2** 
-```
+Test the ping:
+
+Ping client 4 from **client2** 
+
+```bash
 ping -c 3 172.16.30.4
 ```
+
 Result:
+
 <pre>
       client2:~# ping -c 3 172.16.30.4
       PING 172.16.30.4 (172.16.30.4) 56(84) bytes of data.
@@ -170,6 +179,7 @@ Result:
       64 bytes from 172.16.30.4: icmp_seq=3 ttl=64 time=2.00 ms
 </pre>
 
+Run the inventory report to verify the new tenant.
 
 ## Next Section:   [SONiC Maintenance](https://github.com/srlinuxamericas/ac6-sonic/tree/main/06-sonic-mw)
 
