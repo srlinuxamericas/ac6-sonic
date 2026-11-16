@@ -20,8 +20,8 @@ Collect network inventory that include:
   
 Automation Files:
 
-|---|---|
 |File|Description|
+|---|---|
 |hosts|inventory file|
 |getinventory.yml|Playbook|
 |ansible.cfg |Configuration|
