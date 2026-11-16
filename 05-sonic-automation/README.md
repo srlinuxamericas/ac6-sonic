@@ -7,17 +7,26 @@ Using Ansible playbooks you will be able to collect and read the network state, 
 
 ## Use cases :
 
-### 2- Network Inventory
+### 1 - Network Inventory
 
 Collect network inventory that include:
-- switches in the fabric,
-- ports,
-- interfaces,
-- IP addresses,
+
+- switches in the fabric
+- ports
+- interfaces
+- IP addresses
 - BGP sessions
 - VLAN to VNI mapping
   
-Automation Files:  
+Automation Files:
+
+|---|---|
+|File|Description|
+|hosts|inventory file|
+|getinventory.yml|Playbook|
+|ansible.cfg |Configuration|
+|fabric-inventory.txt| Report|
+
 - hosts                    --> inventory
 - getinventory.yml        --> playbook
 - ansible.cfg              --> configuration
@@ -34,7 +43,7 @@ cat fabric-inventory.txt
 You can compare it with [this output](fabric-inventory.txt)
 
 
-### 1 - Multi-Tenants: Provisioning a tenant segment
+### 2 - Multi-Tenants: Provisioning a tenant segment
 
 A new tenant/customer needs a network segment, instead of logging to each leaf switch, you just need to provide the VLAN once and the playbook pushes it to all the switches via gNMI: 
 
