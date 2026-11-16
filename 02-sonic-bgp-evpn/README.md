@@ -199,6 +199,7 @@ gnmic -a spine11:8080 --insecure \
 
 <details>
 <summary>Expected output on Spine11</summary>
+ 
 ```bash
 [
   {
@@ -297,6 +298,7 @@ gnmic -a spine11:8080 --insecure \
   }
 ]
 ```
+
 </details>
 
 Login to **Spine11**. Save the config and Reload.
