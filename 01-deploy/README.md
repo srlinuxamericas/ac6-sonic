@@ -62,7 +62,7 @@ vrnetlab/sonic_sonic-vs   202605    49e18a4cad6f   About a minute ago   8.73GB
 
 ## Deploying the SONiC lab
 
-With the sonic image built, we can proceed with the lab deployment. We will deploy a lab with SONiC and SR Linux to show that Containerlab can have a VM based docker node and a native docker node in the same lab.
+With the sonic image built, we can proceed with the lab deployment. We will deploy a lab with SONiC as leaf spine switches and Linux as the clients.
 
 Use the below command to clone this repo to your VM.
 
