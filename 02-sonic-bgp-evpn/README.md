@@ -198,7 +198,7 @@ gnmic -a spine11:8080 --insecure \
 ```
 
 <details>
-<summary>Expected output on **Spine11**</summary>
+<summary>Expected output on Spine11</summary>
 ```bash
 [
   {
