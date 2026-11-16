@@ -25,21 +25,20 @@ Automation Files:
 |hosts|inventory file|
 |getinventory.yml|Playbook|
 |ansible.cfg |Configuration|
-|fabric-inventory.txt| Report|
-
-- hosts                    --> inventory
-- getinventory.yml        --> playbook
-- ansible.cfg              --> configuration
-- fabric-inventory.txt     --> report (output)
+|fabric-inventory.txt| Output Report|
 
 Running the playbook: 
-```
+
+```bash
 sudo ansible-playbook -i hosts getinventory.yml
 ```
-Verify the result
-```
+
+Verify the result:
+
+```bash
 cat fabric-inventory.txt
 ```
+
 You can compare it with [this output](fabric-inventory.txt)
 
 
