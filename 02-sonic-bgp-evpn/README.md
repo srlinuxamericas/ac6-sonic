@@ -706,7 +706,7 @@ EOF
 
 Enable BGP to advertise VNI:
 
-On **Leaf11**, run the following command **Using FRR CLI**:
+On **Leaf11**, run the following command **Using FRR CLI** (Enter `vtysh` and then `config`):
 
 ```bash
 router bgp 64501
@@ -714,7 +714,7 @@ router bgp 64501
   advertise-all-vni
 ```
 
-On **Leaf12**, run the following command **Using FRR CLI**:
+On **Leaf12**, run the following command **Using FRR CLI** (Enter `vtysh` and then `config`):
 
 ```bash
 router bgp 64502
