@@ -76,4 +76,4 @@ Stop the streaming session using `CTRL+c`.
 
 
 
-## Next Section:   [SONiC PCAP](https://github.com/srlinuxamericas/ac6-sonic/tree/main/05-sonic-pcap)
+## Next Section:   [SONiC Automation](https://github.com/srlinuxamericas/ac6-sonic/tree/main/05-sonic-automation)

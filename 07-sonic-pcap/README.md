@@ -123,6 +123,6 @@ Transfer the pcap file to your laptop and open it using wireshark to look at the
 
 ![image](../diagrams/sonic-tcpdump.png)
 
-This completes the Packet capture section.
+This completes the workshop for this conference.
 
-## Next Section:   [SONiC Maintenance](https://github.com/srlinuxamericas/ac6-sonic/tree/main/06-sonic-mw)
+Thank you for attending !
