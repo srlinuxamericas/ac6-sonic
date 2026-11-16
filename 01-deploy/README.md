@@ -149,7 +149,7 @@ containerlab logs --name ac6-sonic -n leaf12 --tail 100 --follow --timestamps
 ```
 
 
-For spine1111:
+For spine11:
 
 ```bash
 containerlab logs --name ac6-sonic -n spine11 --tail 100 --follow --timestamps
