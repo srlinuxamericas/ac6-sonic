@@ -33,7 +33,7 @@ exit
 
 Apply this policy to both BGP underlay and overlay neighbors.
 
-On **leaf11**:
+On **leaf11** using **FRR CLI**:
 
 ```bash
 router bgp 64501
@@ -46,7 +46,7 @@ neighbor 11.11.11.11 route-map RM_EVPN_GSHUT_IN in
 neighbor 22.22.22.22 route-map RM_EVPN_GSHUT_IN in
 ```
 
-On **leaf12**:
+On **leaf12** using **FRR CLI**:
 
 ```bash
 router bgp 64502
