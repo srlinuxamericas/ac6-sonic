@@ -35,6 +35,8 @@ Change to the directory:
 cd ~/ac6-sonic/05-sonic-automation/
 ```
 
+Run the playbook:
+
 ```bash
 sudo ansible-playbook -i hosts getinventory.yml
 ```
