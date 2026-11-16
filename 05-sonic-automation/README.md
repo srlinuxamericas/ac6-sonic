@@ -1,10 +1,14 @@
 # Ansible with SONiC
 The objective of this section is to show practical automation use cases for a SONIC based Fabric.
-It shows how to use the switches'management layer using gNMI and SSH where gNMI does not reach.
+
+It shows how to use the switches' management layer using gNMI and SSH (where gNMI is not supported).
+
 Using Ansible playbooks you will be able to collect and read the network state, make changes and verify the result without logging into each switch. 
 
 ## Use cases :
+
 ### 2- Network Inventory
+
 Collect network inventory that include:
 - switches in the fabric,
 - ports,
