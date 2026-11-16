@@ -347,6 +347,7 @@ gnmic -a spine12:8080 --insecure \
 ```
 
 Verify on **Spine12** if configurations were updated:
+
 ```bash
 gnmic -a spine12:8080 --insecure \
   -e json_ietf get \
@@ -356,6 +357,110 @@ gnmic -a spine12:8080 --insecure \
   --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR' \
   --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF'
 ```
+
+<details>
+<summary>Expected output on Spine12</summary>
+ 
+```bash
+[
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS",
+        "values": {
+          "CONFIG_DB/localhost/BGP_GLOBALS": {
+            "default": {
+              "default_ipv4_unicast": "true",
+              "ebgp_requires_policy": "false",
+              "load_balance_mp_relax": "true",
+              "local_asn": "64500",
+              "router_id": "22.22.22.22",
+              "vrf_name": "default"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF",
+        "values": {
+          "CONFIG_DB/localhost/BGP_GLOBALS_AF": {
+            "default|ipv4_unicast": {
+              "max_ebgp_paths": "64"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK",
+        "values": {
+          "CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK": {
+            "default|ipv4_unicast|22.22.22.22/32": {}
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR",
+        "values": {
+          "CONFIG_DB/localhost/BGP_NEIGHBOR": {
+            "default|192.168.12.2": {
+              "asn": "64501"
+            },
+            "default|192.168.22.2": {
+              "asn": "64502"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF",
+        "values": {
+          "CONFIG_DB/localhost/BGP_NEIGHBOR_AF": {
+            "default|192.168.12.2|ipv4_unicast": {
+              "admin_status": "up"
+            },
+            "default|192.168.22.2|ipv4_unicast": {
+              "admin_status": "up"
+            }
+          }
+        }
+      }
+    ]
+  }
+]
+```
+
+</details>
 
 Login to **Spine12**. Save the config and Reload.
 
