@@ -130,13 +130,37 @@ At the end of the deployment, the following table will be displayed. Wait for th
 
 ### Monitoring the boot process
 
-To monitor the boot process of SONiC, you can open a new terminal and run the following command:
+To monitor the boot process of SONiC, you can open a new terminal and run the following command.
+
+> the SONiC boot time is approximately 1 minute.
+
+Verify the boot logs for all 4 switches. Run the command from the VM.
+
+For leaf11:
 
 ```bash
 containerlab logs --name ac6-sonic -n leaf11 --tail 100 --follow --timestamps
 ```
 
-> the SONiC boot time is approximately 1 minute.
+For leaf12:
+
+```bash
+containerlab logs --name ac6-sonic -n leaf12 --tail 100 --follow --timestamps
+```
+
+
+For spine1111:
+
+```bash
+containerlab logs --name ac6-sonic -n spine11 --tail 100 --follow --timestamps
+```
+
+
+For spine12:
+
+```bash
+containerlab logs --name ac6-sonic -n spine12 --tail 100 --follow --timestamps
+```
 
 Wait for the following message to appear in the boot logs which indicates the completion of the boot process and that the node is ready for login.
 
