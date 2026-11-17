@@ -1,0 +1,156 @@
+# Copyright 2025 Nokia
+# Licensed under the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
+username: admin
+timeout: 10s
+    
+targets:
+  #SONiC Nodes
+  leaf11:8080:
+    username: admin
+    password: admin
+    insecure: true
+    subscriptions:
+      - sonic-if-stats
+      # - sonic_counters_port 
+    
+  leaf12:8080:
+    username: admin
+    password: admin
+    insecure: true
+    subscriptions:
+      - sonic-if-stats
+      # - sonic_counters_port 
+
+  spine11:8080:
+    username: admin
+    password: admin
+    insecure: true
+    subscriptions:
+      - sonic-if-stats
+      # - sonic_counters_port 
+
+  spine12:8080:
+    username: admin
+    password: admin
+    insecure: true
+    subscriptions:
+      - sonic-if-stats
+      # - sonic_counters_port 
+    
+subscriptions:
+
+  # sonic-if-stats:
+  #   mode: stream
+  #   stream-mode: sample
+  #   sample-interval: 5s
+  #   paths:
+  #     - /interfaces/interface[name=Ethernet1]/state/oper-status
+  #     - /interfaces/interface[name=Ethernet2]/state/oper-status
+  #     - /interfaces/interface[name=Ethernet3]/state/oper-status
+  #     - /interfaces/interface[name=Ethernet4]/state/oper-status
+  #     - /interfaces/interface[name=Ethernet5]/state/oper-status
+  #     - /interfaces/interface[name=Ethernet10]/state/oper-status
+  #     - /interfaces/interface/state/counters
+  #     - /network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/session-state
+  #     - /network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor
+
+  # sonic-if-stats:
+  #   target: OC-YANG
+  #   mode: stream
+  #   stream-mode: on-change
+  #   paths:
+  #     - /interfaces/interface[name=Ethernet0]/state/netdev_oper_status
+  #     - /interfaces/interface[name=Ethernet4]/state/netdev_oper_status
+  #     - /interfaces/interface[name=Ethernet36]/state/netdev_oper_status
+  #     - /interfaces/interface[name=Ethernet40]/state/netdev_oper_status
+
+  sonic-if-stats:
+    target: STATE_DB
+    mode: stream
+    stream-mode: on-change
+    paths:
+      - PORT_TABLE/Ethernet0/netdev_oper_status
+      - PORT_TABLE/Ethernet4/netdev_oper_status
+      - PORT_TABLE/Ethernet36/netdev_oper_status
+      - PORT_TABLE/Ethernet40/netdev_oper_status
+      
+  # sonic-if-stats:
+  #   target: OC-YANG
+  #   mode: stream
+  #   stream-mode: on-change
+  #   paths:
+  #     - /interfaces/interface[name=Ethernet0]/state/oper-status
+  #     - /interfaces/interface[name=Ethernet4]/state/oper-status
+  #     - /interfaces/interface[name=Ethernet36]/state/oper-status
+  #     - /interfaces/interface[name=Ethernet40]/state/oper-status
+
+  sonic_counters_port:
+    target: COUNTERS_DB
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+    paths:
+      - "COUNTERS/Ethernet0"
+      - "COUNTERS/Ethernet4"
+      - "COUNTERS/Ethernet36"
+      - "COUNTERS/Ethernet40"
+
+outputs:
+  prom-output:
+    type: prometheus
+    listen: :9273
+    expiration: -1s
+    event-processors:
+      # - trim-prefixes
+      # - rename-srl-interface
+      - oper-state-to-int
+
+processors:
+  # trim-prefixes:
+  #   event-strings:
+  #     value-names:
+  #       - "^/state/.*"
+  #     transforms:
+  #       - trim-prefix:
+  #           apply-on: "name"
+  #           prefix: "/state/"
+
+  oper-state-to-int:
+    event-strings:
+      value-names:
+        - ".*"
+      transforms:
+        - replace:
+            apply-on: "value"
+            old: "up"
+            new: "1"
+        - replace:
+            apply-on: "value"
+            old: "UP"
+            new: "1"
+        - replace:
+            apply-on: "value"
+            old: "down"
+            new: "0"
+        - replace:
+            apply-on: "value"
+            old: "DOWN"
+            new: "0"
+        - replace:
+            apply-on: "value"
+            old: "ESTABLISHED"
+            new: "1"
+        - replace:
+            apply-on: "value"
+            old: "IDLE"
+            new: "0"
+        - replace:
+            apply-on: "value"
+            old: "ACTIVE"
+            new: "0"
+        - replace:
+            apply-on: "value"
+            old: "CONNECT"
+            new: "0"
