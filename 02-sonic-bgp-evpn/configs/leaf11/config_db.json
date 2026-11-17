@@ -1223,5 +1223,62 @@
         "DATABASE": {
             "VERSION": "version_202511_01"
         }
+    },
+    "VLAN": {
+        "Vlan110": {
+            "vlanid": "110"
+        },
+        "Vlan200": {
+            "vlanid": "200"
+        },
+        "Vlan999": {
+            "vlanid": "999"
+        }
+    },
+    "VLAN_INTERFACE": {
+        "Vlan200": {
+            "vrf_name": "Vrf_Type5"
+        },
+        "Vlan200|10.80.1.254/24": {},
+        "Vlan999": {
+            "vrf_name": "Vrf_Type5"
+        }
+    },
+    "VLAN_MEMBER": {
+        "Vlan110|Ethernet36": {
+            "tagging_mode": "untagged"
+        },
+        "Vlan200|Ethernet40": {
+            "tagging_mode": "untagged"
+        }
+    },
+    "VRF": {
+        "Vrf_Type5": {
+            "vni": "10999"
+        }
+    },
+    "VXLAN_EVPN_NVO": {
+        "nvo": {
+            "source_vtep": "vtep"
+        }
+    },
+    "VXLAN_TUNNEL": {
+        "vtep": {
+            "src_ip": "1.1.1.1"
+        }
+    },
+    "VXLAN_TUNNEL_MAP": {
+        "vtep|map_10110_Vlan110": {
+            "vlan": "Vlan110",
+            "vni": "10110"
+        },
+        "vtep|map_10200_Vlan200": {
+            "vlan": "Vlan200",
+            "vni": "10200"
+        },
+        "vtep|map_10999_Vlan999": {
+            "vlan": "Vlan999",
+            "vni": "10999"
+        }
     }
 }

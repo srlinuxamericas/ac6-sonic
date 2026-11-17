@@ -1,0 +1,41 @@
+targets:
+  leaf11:8080:
+    username: admin
+    password: admin
+    insecure: true
+    subscriptions: [sonic_counters_port]
+
+  leaf12:8080:
+    username: admin
+    password: admin
+    insecure: true
+    subscriptions: [sonic_counters_port]
+
+  spine11:8080:
+    username: admin
+    password: admin
+    insecure: true
+    subscriptions: [sonic_counters_port]
+
+  spine12:8080:
+    username: admin
+    password: admin
+    insecure: true
+    subscriptions: [sonic_counters_port]
+
+subscriptions:
+  sonic_counters_port:
+    target: COUNTERS_DB
+    mode: stream
+    stream-mode: on-change
+    paths:
+      - COUNTERS/Ethernet0
+      - COUNTERS/Ethernet4
+      - COUNTERS/Ethernet36
+      - COUNTERS/Ethernet40
+
+outputs:
+  prom-output:
+    type: prometheus
+    listen: :9273
+    expiration: -1s

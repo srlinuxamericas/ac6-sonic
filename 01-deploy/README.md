@@ -194,6 +194,8 @@ ssh root@client1
 
 Login to all 4 switches and verify the internal docker container for sonic functions are running:
 
+Before proceeding to the next step, ensure that the `mgmt-framework` and `pmon` containers are running.
+
 ```bash
 docker ps
 ```
