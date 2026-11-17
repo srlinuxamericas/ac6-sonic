@@ -184,7 +184,9 @@ gnmic -a spine11:8080 --insecure \
   --update-path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF/default|192.168.20.2|ipv4_unicast' \
   --update-value '{"admin_status": "up"}'
 ```
+
 Verify on **Spine11** if configurations were updated:
+
 ```bash
 gnmic -a spine11:8080 --insecure \
   -e json_ietf get \
@@ -194,6 +196,111 @@ gnmic -a spine11:8080 --insecure \
   --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR' \
   --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF'
 ```
+
+<details>
+<summary>Expected output on Spine11</summary>
+ 
+```bash
+[
+  {
+    "source": "spine11:8080",
+    "timestamp": 1794854322410576861,
+    "time": "2026-11-16T18:38:42.410576861Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS",
+        "values": {
+          "CONFIG_DB/localhost/BGP_GLOBALS": {
+            "default": {
+              "default_ipv4_unicast": "true",
+              "ebgp_requires_policy": "false",
+              "load_balance_mp_relax": "true",
+              "local_asn": "64500",
+              "router_id": "11.11.11.11",
+              "vrf_name": "default"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine11:8080",
+    "timestamp": 1794854322410576861,
+    "time": "2026-11-16T18:38:42.410576861Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF",
+        "values": {
+          "CONFIG_DB/localhost/BGP_GLOBALS_AF": {
+            "default|ipv4_unicast": {
+              "max_ebgp_paths": "64"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine11:8080",
+    "timestamp": 1794854322410576861,
+    "time": "2026-11-16T18:38:42.410576861Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK",
+        "values": {
+          "CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK": {
+            "default|ipv4_unicast|11.11.11.11/32": {}
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine11:8080",
+    "timestamp": 1794854322410576861,
+    "time": "2026-11-16T18:38:42.410576861Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR",
+        "values": {
+          "CONFIG_DB/localhost/BGP_NEIGHBOR": {
+            "default|192.168.10.2": {
+              "asn": "64501"
+            },
+            "default|192.168.20.2": {
+              "asn": "64502"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine11:8080",
+    "timestamp": 1794854322410576861,
+    "time": "2026-11-16T18:38:42.410576861Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF",
+        "values": {
+          "CONFIG_DB/localhost/BGP_NEIGHBOR_AF": {
+            "default|192.168.10.2|ipv4_unicast": {
+              "admin_status": "up"
+            },
+            "default|192.168.20.2|ipv4_unicast": {
+              "admin_status": "up"
+            }
+          }
+        }
+      }
+    ]
+  }
+]
+```
+
+</details>
+
 Login to **Spine11**. Save the config and Reload.
 
 ```bash
@@ -240,6 +347,7 @@ gnmic -a spine12:8080 --insecure \
 ```
 
 Verify on **Spine12** if configurations were updated:
+
 ```bash
 gnmic -a spine12:8080 --insecure \
   -e json_ietf get \
@@ -249,6 +357,110 @@ gnmic -a spine12:8080 --insecure \
   --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR' \
   --path 'sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF'
 ```
+
+<details>
+<summary>Expected output on Spine12</summary>
+ 
+```bash
+[
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS",
+        "values": {
+          "CONFIG_DB/localhost/BGP_GLOBALS": {
+            "default": {
+              "default_ipv4_unicast": "true",
+              "ebgp_requires_policy": "false",
+              "load_balance_mp_relax": "true",
+              "local_asn": "64500",
+              "router_id": "22.22.22.22",
+              "vrf_name": "default"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF",
+        "values": {
+          "CONFIG_DB/localhost/BGP_GLOBALS_AF": {
+            "default|ipv4_unicast": {
+              "max_ebgp_paths": "64"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK",
+        "values": {
+          "CONFIG_DB/localhost/BGP_GLOBALS_AF_NETWORK": {
+            "default|ipv4_unicast|22.22.22.22/32": {}
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR",
+        "values": {
+          "CONFIG_DB/localhost/BGP_NEIGHBOR": {
+            "default|192.168.12.2": {
+              "asn": "64501"
+            },
+            "default|192.168.22.2": {
+              "asn": "64502"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "spine12:8080",
+    "timestamp": 1794854721601344247,
+    "time": "2026-11-16T18:45:21.601344247Z",
+    "updates": [
+      {
+        "Path": "sonic-db:/CONFIG_DB/localhost/BGP_NEIGHBOR_AF",
+        "values": {
+          "CONFIG_DB/localhost/BGP_NEIGHBOR_AF": {
+            "default|192.168.12.2|ipv4_unicast": {
+              "admin_status": "up"
+            },
+            "default|192.168.22.2|ipv4_unicast": {
+              "admin_status": "up"
+            }
+          }
+        }
+      }
+    ]
+  }
+]
+```
+
+</details>
 
 Login to **Spine12**. Save the config and Reload.
 
@@ -271,13 +483,13 @@ The output below confirms that IPv4 BGP neighbor sessions are established betwee
 ```bash
 IPv4 Unicast Summary:
 BGP router identifier 11.11.11.11, local AS number 64500 VRF default vrf-id 0
-BGP table version 8
-RIB entries 17, using 2176 bytes of memory
+BGP table version 5
+RIB entries 5, using 640 bytes of memory
 Peers 2, using 47 KiB of memory
 
 Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
-192.168.10.2    4      64501        13        11        8    0    0 00:00:12            4        8 N/A
-192.168.20.2    4      64502        13        11        8    0    0 00:00:12            4        8 N/A
+192.168.10.2    4      64501         8         8        5    0    0 00:02:02            1        3 N/A
+192.168.20.2    4      64502         8         8        5    0    0 00:02:02            1        3 N/A
 
 Total number of neighbors 2
 ```
@@ -494,7 +706,7 @@ EOF
 
 Enable BGP to advertise VNI:
 
-On **Leaf11**, run the following command **Using FRR CLI**:
+On **Leaf11**, run the following command **Using FRR CLI** (Enter `vtysh` and then `config`):
 
 ```bash
 router bgp 64501
@@ -502,7 +714,7 @@ router bgp 64501
   advertise-all-vni
 ```
 
-On **Leaf12**, run the following command **Using FRR CLI**:
+On **Leaf12**, run the following command **Using FRR CLI** (Enter `vtysh` and then `config`):
 
 ```bash
 router bgp 64502
@@ -625,7 +837,7 @@ EOF
 
 VRF configuration on **Leaf11**:
 
-Using **FRR CLI**:
+Using **FRR CLI** (Enter `vtysh` and then `config`):
 
 ```bash
 vrf Vrf_Type5
@@ -652,7 +864,7 @@ exit
 
 VRF configuration on **Leaf12**:
 
-Using **FRR CLI**:
+Using **FRR CLI** (Enter `vtysh` and then `config`):
 
 ```bash
 vrf Vrf_Type5
@@ -676,19 +888,26 @@ router bgp 64502 vrf Vrf_Type5
  exit-address-family
 exit
 ```
+
 ### Verify routes are present under vrf Vrf_Type5
-Log into **Leaf11** and **Leaf12**
+
+On **Leaf11** and **Leaf12**
 
 ```bash
-show ip route vrf Vrf_Type5 bgp
+do show ip route vrf Vrf_Type5 bgp
 ```
 
-Expected output
+Expected output on leaf11:
+
 ```bash
 leaf11# show ip route vrf Vrf_Type5 bgp
 B>* 10.90.1.0/24 [20/0] via 2.2.2.2, Vlan999 onlink, weight 1, 00:33:36
                         via 2.2.2.2, Vlan999 onlink (dup), weight 1, 00:33:36
+```
 
+Expected output on leaf12:
+
+```bash
 leaf12# show ip route vrf Vrf_Type5 bgp
 B>* 10.80.1.0/24 [20/0] via 1.1.1.1, Vlan999 onlink, weight 1, 00:28:52
                         via 1.1.1.1, Vlan999 onlink (dup), weight 1, 00:28:52

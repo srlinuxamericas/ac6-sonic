@@ -18,17 +18,18 @@ The Subscribe RPC is the most commonly used gNMI RPC and provides Streaming Tele
 
 **Accessing Grafana:**
 
-Using the browser : `<id>`.workxshop.net:3000
+Using the browser : http://`<id>`.workxshop.net:3000
 
-   User:admin
-  Password: admin
-    (skip changing the password step) 
+- User:admin
+- Password: admin
 
-<img src="grafana.png" alt="Descriptive text" width="700">
+(skip changing the password step) 
 
-
+On the left menu, select `Dashboards`. On the new page, select `SONiC EVPN Failover Demo`.
 
 We will try 2 different telemetry options during this workshop.
+
+<img src="grafana.png" alt="Descriptive text" width="700">
 
 ### Sample
 

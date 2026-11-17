@@ -37,7 +37,7 @@ supported encodings:
 
 ## gNMI Get
 
-In the previous section, we pushed BGP configuration to `spine11`. Let's use gNMI GET RPCs to retrieve configuration and state for BGP.
+In the previous section, we pushed BGP configuration to `spine11`. Let's use gNMI GET RPCs to retrieve configuration for BGP.
 
 Run the below command from the VM to get the BGP neighbor configuration.
 

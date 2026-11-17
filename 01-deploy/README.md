@@ -2,7 +2,7 @@
 
 ## Lab Topology
 
-Each workshop participant will be provided with the below topology consisting of 2 leaf and 2 spines nodes along with 2 clients. The Leaf-Spine architecture is typical in a Data Center environment and clients are simulating workloads or VMs.
+Each workshop participant will be provided with the below topology consisting of 2 leaf and 2 spines nodes along with 4 clients. The Leaf-Spine architecture is typical in a Data Center environment and clients are simulating workloads or VMs.
 
 ![image](../diagrams/lab-topology.png)
 
@@ -49,20 +49,20 @@ Once copied, we can enter in the `~/vrnetlab/sonic` image and build the containe
 cd ~/vrnetlab/sonic && make
 ```
 
-The resulting image will be tagged as `vrnetlab/sonic_sonic-vs:202405`. This can be verified using 
+The resulting image will be tagged as `vrnetlab/sonic_sonic-vs:202605`. This can be verified using 
 
 ```
 docker images 
 ```
 
 ```bash
-REPOSITORY                TAG       IMAGE ID       CREATED          SIZE
-vrnetlab/sonic_sonic-vs   202605    33b73b1dadc4   5 minutes ago    6.37GB
+REPOSITORY                TAG       IMAGE ID       CREATED              SIZE
+vrnetlab/sonic_sonic-vs   202605    49e18a4cad6f   About a minute ago   8.73GB
 ```
 
 ## Deploying the SONiC lab
 
-With the sonic image built, we can proceed with the lab deployment. We will deploy a lab with SONiC and SR Linux to show that Containerlab can have a VM based docker node and a native docker node in the same lab.
+With the sonic image built, we can proceed with the lab deployment. We will deploy a lab with SONiC as leaf spine switches and Linux as the clients.
 
 Use the below command to clone this repo to your VM.
 
@@ -87,56 +87,80 @@ sudo clab dep -c
 At the end of the deployment, the following table will be displayed. Wait for the sonic boot to be completed (see next section), before trying to login to sonic.
 
 ```bash
-╭────────────────┬─────────────────────────────────────────────┬────────────────────┬────────────────╮
-│      Name      │                  Kind/Image                 │        State       │ IPv4/6 Address │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ client11       │ linux                                       │ running            │ 172.40.40.10   │
-│                │ ghcr.io/mfzhsn/network-multitool-sshd:0.0.5 │                    │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ client12       │ linux                                       │ running            │ 172.40.40.11   │
-│                │ ghcr.io/mfzhsn/network-multitool-sshd:0.0.5 │                    │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ client13       │ linux                                       │ running            │ 172.40.40.12   │
-│                │ ghcr.io/mfzhsn/network-multitool-sshd:0.0.5 │                    │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ client14       │ linux                                       │ running            │ 172.40.40.13   │
-│                │ ghcr.io/mfzhsn/network-multitool-sshd:0.0.5 │                    │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ gnmic          │ linux                                       │ running            │ 172.40.40.6    │
-│                │ ghcr.io/openconfig/gnmic:0.47.0             │                    │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ gnmic-counters │ linux                                       │ running            │ 172.40.40.8    │
-│                │ ghcr.io/openconfig/gnmic:0.47.0             │                    │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ grafana        │ linux                                       │ running            │ 172.40.40.9    │
-│                │ grafana/grafana:latest                      │                    │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ leaf11         │ sonic-vm                                    │ running            │ 172.40.40.2    │
-│                │ vrnetlab/sonic_sonic-vs:202605              │ (health: starting) │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ leaf12         │ sonic-vm                                    │ running            │ 172.40.40.4    │
-│                │ vrnetlab/sonic_sonic-vs:202605              │ (health: starting) │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ prometheus     │ linux                                       │ running            │ 172.40.40.7    │
-│                │ quay.io/prometheus/prometheus:v2.54.1       │                    │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ spine11        │ sonic-vm                                    │ running            │ 172.40.40.3    │
-│                │ vrnetlab/sonic_sonic-vs:202605              │ (health: starting) │ N/A            │
-├────────────────┼─────────────────────────────────────────────┼────────────────────┼────────────────┤
-│ spine12        │ sonic-vm                                    │ running            │ 172.40.40.5    │
-│                │ vrnetlab/sonic_sonic-vs:202605              │ (health: starting) │ N/A            │
-╰────────────────┴─────────────────────────────────────────────┴────────────────────┴────────────────╯
+╭────────────────┬─────────────────────────────────────────────┬───────────┬────────────────╮
+│      Name      │                  Kind/Image                 │   State   │ IPv4/6 Address │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ client1        │ linux                                       │ running   │ 172.40.40.10   │
+│                │ ghcr.io/mfzhsn/network-multitool-sshd:0.0.5 │           │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ client2        │ linux                                       │ running   │ 172.40.40.11   │
+│                │ ghcr.io/mfzhsn/network-multitool-sshd:0.0.5 │           │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ client3        │ linux                                       │ running   │ 172.40.40.12   │
+│                │ ghcr.io/mfzhsn/network-multitool-sshd:0.0.5 │           │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ client4        │ linux                                       │ running   │ 172.40.40.13   │
+│                │ ghcr.io/mfzhsn/network-multitool-sshd:0.0.5 │           │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ gnmic          │ linux                                       │ running   │ 172.40.40.7    │
+│                │ ghcr.io/openconfig/gnmic:0.47.0             │           │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ gnmic-counters │ linux                                       │ running   │ 172.40.40.9    │
+│                │ ghcr.io/openconfig/gnmic:0.47.0             │           │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ grafana        │ linux                                       │ running   │ 172.40.40.8    │
+│                │ grafana/grafana:latest                      │           │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ leaf11         │ sonic-vm                                    │ running   │ 172.40.40.2    │
+│                │ vrnetlab/sonic_sonic-vs:202605              │ (healthy) │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ leaf12         │ sonic-vm                                    │ running   │ 172.40.40.4    │
+│                │ vrnetlab/sonic_sonic-vs:202605              │ (healthy) │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ prometheus     │ linux                                       │ running   │ 172.40.40.6    │
+│                │ quay.io/prometheus/prometheus:v2.54.1       │           │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ spine11        │ sonic-vm                                    │ running   │ 172.40.40.3    │
+│                │ vrnetlab/sonic_sonic-vs:202605              │ (healthy) │ N/A            │
+├────────────────┼─────────────────────────────────────────────┼───────────┼────────────────┤
+│ spine12        │ sonic-vm                                    │ running   │ 172.40.40.5    │
+│                │ vrnetlab/sonic_sonic-vs:202605              │ (healthy) │ N/A            │
+╰────────────────┴─────────────────────────────────────────────┴───────────┴────────────────╯
 ```
 
 ### Monitoring the boot process
 
-To monitor the boot process of SONiC, you can open a new terminal and run the following command:
+To monitor the boot process of SONiC, you can open a new terminal and run the following command.
+
+> the SONiC boot time is approximately 1 minute.
+
+Verify the boot logs for all 4 switches. Run the command from the VM.
+
+For leaf11:
 
 ```bash
 containerlab logs --name ac6-sonic -n leaf11 --tail 100 --follow --timestamps
 ```
 
-> the SONiC boot time is approximately 1 minute.
+For leaf12:
+
+```bash
+containerlab logs --name ac6-sonic -n leaf12 --tail 100 --follow --timestamps
+```
+
+
+For spine11:
+
+```bash
+containerlab logs --name ac6-sonic -n spine11 --tail 100 --follow --timestamps
+```
+
+
+For spine12:
+
+```bash
+containerlab logs --name ac6-sonic -n spine12 --tail 100 --follow --timestamps
+```
 
 Wait for the following message to appear in the boot logs which indicates the completion of the boot process and that the node is ready for login.
 

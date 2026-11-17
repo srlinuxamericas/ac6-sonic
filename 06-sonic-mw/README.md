@@ -16,7 +16,7 @@ Our first step is to configure the route policy on the leafs to set `local-prefe
 
 This configuration will be pushed via FRR CLI.
 
-On **leaf11** and **leaf12** (copy and paste to both switches):
+On **leaf11** and **leaf12** (copy and paste to both switches after typing `vtysh`):
 
 ```bash
 configure
@@ -33,7 +33,7 @@ exit
 
 Apply this policy to both BGP underlay and overlay neighbors.
 
-On **leaf11**:
+On **leaf11** using **FRR CLI**:
 
 ```bash
 router bgp 64501
@@ -46,7 +46,7 @@ neighbor 11.11.11.11 route-map RM_EVPN_GSHUT_IN in
 neighbor 22.22.22.22 route-map RM_EVPN_GSHUT_IN in
 ```
 
-On **leaf12**:
+On **leaf12** using **FRR CLI**:
 
 ```bash
 router bgp 64502
@@ -93,13 +93,25 @@ gnmic -a spine12:8080 -u admin -p admin --insecure \
 
 Before simulating the maitenance window, start traffic between the clients.
 
-Login to **client1** and run:
+Login to **client1**:
+
+```bash
+ssh root@client1
+```
+
+and run:
 
 ```bash
 iperf3 -s
 ```
 
-Login to **client3** and run:
+Login to **client3**:
+
+```bash
+ssh root@client3
+```
+
+and run:
 
 ```bash
 iperf3 -c 172.16.10.50 -u -P 5 -l 1200 -b 4M -t 900
